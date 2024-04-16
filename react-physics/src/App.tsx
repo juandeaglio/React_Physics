@@ -1,53 +1,37 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import styled, {keyframes} from 'styled-components';
+import styled from 'styled-components';
 
-const moveRectAnimation = (startX: number, startY: number) => keyframes`
-  from {
-    transform: translate(${startX}px, ${startY}px);
-  }
-  to {
-    transform: translate(${startX + 100}px, ${startY + 100}px);
-  }
-`
-const Rect = styled.rect<{ boxPause: boolean; currentX: number; currentY: number; animateRect: boolean; animationStartX: number; animationStartY: number }>`
+const Rect = styled.rect`
   fill: red;
   width: 100px;
   height: 100px;
-  animation-play-state: ${props => props.boxPause ? 'paused' : 'running'};
-  x: ${props => props.currentX};
-  y: ${props => props.currentY};
-  animation: ${props => props.animateRect ? moveRectAnimation(props.animationStartX, props.animationStartY) : 'none'} 1s linear;
-  animation-fill-mode: forwards;
 `;
 
 function App() 
 {
   const [count, setCount] = useState<number>(0)
-  const [currentX, setX] = useState<number>(0);
-  const [currentY, setY] = useState<number>(0);
-  const [animationStartX, setStartX] = useState<number>(0);
-  const [animationStartY, setStartY] = useState<number>(0);
-  const [boxPause, setBoxPause] = useState<boolean>(false);
-  const [animation, setAnimation] = useState<boolean>(false);
+  const animationStartXRef = useRef<number>(0);
+  const animationStartYRef = useRef<number>(0);
+  const [animationBegin, setAnimationBegin] = useState<string>('indefinite');
 
 
 
 
   useEffect(() => {
-    setX(10)
-    setY(10)
-    setStartX(currentX)
-    setStartY(currentY)
-    setAnimation(true)
+    setAnimationBegin('indefinite');
   }, []);
   
-  const invertBoxPauseState = () =>
-  {
-    setBoxPause(!boxPause)
-  }
+  const toggleAnimation = () => {
+    setAnimationBegin(prevState => prevState === 'indefinite' ? '0s' : 'indefinite');
+  };
+
+  const setNewDestination = () => {
+    animationStartXRef.current += 100;
+    setAnimationBegin('indefinite');
+  };
 
   return (
     <>
@@ -67,21 +51,32 @@ function App()
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <button onClick={() => invertBoxPauseState()}>
+        <button onClick={() => toggleAnimation()}>
           Toggle Animation State
         </button>
-        <button onClick={() => {setStartX(animationStartX); setStartY(animationStartY)}}>
+        <button onClick={() => {setNewDestination()}}>
           New Box Destination
         </button>
         <svg>
-         <Rect 
-              boxPause={boxPause}
-              currentX={currentX}
-              currentY={currentY}
-              animationStartX={animationStartX}
-              animationStartY={animationStartY}
-              animateRect={animation}
-          />
+         <Rect>
+            <animate
+              attributeName="x"
+              from={animationStartXRef.current}
+              to={animationStartXRef.current + 100}
+              dur="1s"
+              begin={animationBegin}
+              fill="freeze"
+            />
+            <animate
+              attributeName="y"
+              from={animationStartYRef.current}
+              to={animationStartYRef.current}
+              dur="1s"
+              begin={animationBegin}
+              fill="freeze"
+            />
+          </Rect>
+
         </svg>
       </div>
       <p className="read-the-docs">
