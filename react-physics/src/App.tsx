@@ -5,7 +5,9 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const setBoxStyle = () => {
 
+  }
   return (
     <>
       <div>
@@ -24,6 +26,11 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
+        <button onClick={setBoxStyle}>
+          Move Box
+        </button>
+        <rect fill='red' width={100} height={100} role='box'>
+        </rect>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
