@@ -13,25 +13,56 @@ const Rect = styled.rect`
 function App() 
 {
   const [count, setCount] = useState<number>(0)
-  const animationStartXRef = useRef<number>(0);
-  const animationStartYRef = useRef<number>(0);
-  const [animationBegin, setAnimationBegin] = useState<string>('indefinite');
-
-
-
+  const [boxX, setBoxX] = useState<number>(0)
+  const [boxY, setBoxY] = useState<number>(0)
+  const animationRef = useRef<number>();
+  const boxRef = useRef<SVGRectElement | null>(null);
+  const styleRef = useRef<HTMLStyleElement | null>(null);
 
   useEffect(() => {
-    setAnimationBegin('indefinite');
-  }, []);
-  
-  const toggleAnimation = () => {
-    setAnimationBegin(prevState => prevState === 'indefinite' ? '0s' : 'indefinite');
-  };
+    const animate = () => {
+      // Your code to be executed on each animation frame
+      // For example, you can update the component's state or perform any other operations
 
-  const setNewDestination = () => {
-    animationStartXRef.current += 100;
-    setAnimationBegin('indefinite');
-  };
+      // Schedule the next animation frame
+      if(boxRef.current)
+      {
+        const elementRect = boxRef.current.getBoundingClientRect();
+        setBoxX(elementRect.left);
+        setBoxY(elementRect.top);
+      }
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    // Start the animation loop
+    if (boxRef.current && styleRef.current) {
+      boxRef.current.style.animation = 'move 2s linear infinite';
+      // You can also modify the keyframes or transform properties directly
+        styleRef.current.sheet?.insertRule(`
+         @keyframes move {
+           0% {
+                transform: translateX(0);
+            }
+            50% {
+              transform: translateX(200px);
+            }
+            100% {
+              transform: translateX(0);
+            }
+          }`
+          , 0);
+    }
+    animationRef.current = requestAnimationFrame(animate);
+
+    // Clean up the animation loop on component unmount
+    return () => {
+      cancelAnimationFrame(animationRef.current as number);
+    };
+  }, [boxRef]); // Empty dependency array to run the effect only once
+
+
+
 
   return (
     <>
@@ -51,33 +82,20 @@ function App()
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <button onClick={() => toggleAnimation()}>
+        <button >
           Toggle Animation State
         </button>
-        <button onClick={() => {setNewDestination()}}>
+        <button >
           New Box Destination
         </button>
         <svg>
-         <Rect>
-            <animate
-              attributeName="x"
-              from={animationStartXRef.current}
-              to={animationStartXRef.current + 100}
-              dur="1s"
-              begin={animationBegin}
-              fill="freeze"
-            />
-            <animate
-              attributeName="y"
-              from={animationStartYRef.current}
-              to={animationStartYRef.current}
-              dur="1s"
-              begin={animationBegin}
-              fill="freeze"
-            />
+          <Rect ref={boxRef}>
           </Rect>
-
         </svg>
+        <style ref={styleRef} />
+        
+        <p>X: {boxX}</p>
+        <p>Y: {boxY}</p>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
