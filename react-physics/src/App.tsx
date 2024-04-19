@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -12,57 +12,91 @@ const Rect = styled.rect`
 
 function App() 
 {
-  const [count, setCount] = useState<number>(0)
-  const [boxX, setBoxX] = useState<number>(0)
-  const [boxY, setBoxY] = useState<number>(0)
+  const [count, setCount] = useState<number>(0);
+  const [boxX, setBoxX] = useState<number>(0);
+  const [boxY, setBoxY] = useState<number>(0);
+  const [animX, setAnimX] = useState<number>(0);
+  //const [animY, setAnimY] = useState<number>(0);
   const animationRef = useRef<number>();
   const boxRef = useRef<SVGRectElement | null>(null);
   const styleRef = useRef<HTMLStyleElement | null>(null);
+  const createAnimation = useCallback(() => {
+    // wat do we do with this.
+    if(boxRef.current && boxRef.current.style.animation != 'none')
+    {
+      boxRef.current.style.animation = 'move 2s linear forwards';
+    }
+    
+    if (styleRef.current && styleRef.current.sheet)
+    {
+      styleRef.current.sheet?.cssRules.length > 0 ? styleRef.current.sheet?.deleteRule(0) : null;
+      styleRef.current.sheet?.insertRule(`
+          @keyframes move {
+            0% {
+                transform: translateX(${animX}px);
+            }
+            100% {
+              transform: translateX(${animX + 200}px);
+            }
+          }`, 0);
+    }
+  }, [animX]);
+  
 
   useEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.style.animationPlayState = 'running';
+      getBoxCoordinates();
+      setBoxAnimEndState(boxX);
+    }
+
     const animate = () => {
-      // Your code to be executed on each animation frame
-      // For example, you can update the component's state or perform any other operations
-
-      // Schedule the next animation frame
-      if(boxRef.current)
-      {
-        const elementRect = boxRef.current.getBoundingClientRect();
-        setBoxX(elementRect.left);
-        setBoxY(elementRect.top);
-      }
-
+      getBoxCoordinates();
+      // recursive loop
       animationRef.current = requestAnimationFrame(animate);
     };
 
+
     // Start the animation loop
-    if (boxRef.current && styleRef.current) {
-      boxRef.current.style.animation = 'move 2s linear infinite';
-      // You can also modify the keyframes or transform properties directly
-        styleRef.current.sheet?.insertRule(`
-         @keyframes move {
-           0% {
-                transform: translateX(0);
-            }
-            50% {
-              transform: translateX(200px);
-            }
-            100% {
-              transform: translateX(0);
-            }
-          }`
-          , 0);
-    }
     animationRef.current = requestAnimationFrame(animate);
 
     // Clean up the animation loop on component unmount
     return () => {
       cancelAnimationFrame(animationRef.current as number);
     };
-  }, [boxRef]); // Empty dependency array to run the effect only once
+  }, []); // Empty dependency array to run the effect only once
 
+  function setBoxAnimEndState(x: number)
+  {    
+    if (boxRef.current) {
+      setAnimX(x);
+    }
+  }
+  function invertState() {
+    if (boxRef.current) {
+      if (boxRef.current.style.animationPlayState == 'running')
+      {
+        boxRef.current.style.animationPlayState = 'paused';
+      }
+      else
+      {
+        boxRef.current.style.animationPlayState = 'running'
+      }
+    }
+  }
+  
+  useEffect(() => {
+    createAnimation()
+  }, [createAnimation]);
 
-
+  function getBoxCoordinates() {
+    if (boxRef.current) {
+      const elementRect = boxRef.current.getBoundingClientRect();
+      setBoxX(elementRect.left);
+      setBoxY(elementRect.top);
+    }
+  }
+  
 
   return (
     <>
@@ -82,13 +116,13 @@ function App()
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <button >
+        <button onClick={() => invertState()}>
           Toggle Animation State
         </button>
-        <button >
+        <button onClick={() => setBoxAnimEndState(boxX)}>
           New Box Destination
         </button>
-        <svg>
+        <svg width='full'>
           <Rect ref={boxRef}>
           </Rect>
         </svg>
