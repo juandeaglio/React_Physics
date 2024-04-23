@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -14,93 +14,7 @@ const Rect = styled.rect`
 function App() 
 {
   const [count, setCount] = useState<number>(0);
-  const [boxX, setBoxX] = useState<number>(0);
-  const [boxY, setBoxY] = useState<number>(0);
-  const [boxXLoaded, setBoxXLoaded] = useState<boolean>(false);
-  //const [animY, setAnimY] = useState<number>(0);
-  const animationRef = useRef<number>();
-  const boxRef = useRef<SVGRectElement | null>(null);
-  const svgRef = useRef<SVGSVGElement | null>(null);
-  const boxAnimRef = useRef<Animation | null>(null);
-  const styleRef = useRef<HTMLStyleElement | null>(null);
-
-  useEffect(() => {
-    getBoxCoordinates();
-    setBoxXLoaded(true);
-
-    const getAnimation = () => {
-      getBoxCoordinates();
-      // recursive loop
-      animationRef.current = requestAnimationFrame(getAnimation);
-    };
-
-
-    // Start the animation loop
-    animationRef.current = requestAnimationFrame(getAnimation);
-
-    // Clean up the animation loop on component unmount
-    return () => {
-      cancelAnimationFrame(animationRef.current as number);
-    };
-  }, []); // Empty dependency array to run the effect only once
-
-  useEffect(() => 
-  {
-    if (boxRef.current && boxXLoaded) {
-      boxRef.current.style.animationPlayState = 'running';
-
-      console.log(`Starting animation from: ${boxX}`);
-      boxAnimRef.current = newAnimation(boxX);
-      
-      boxAnimRef.current.onfinish = () =>
-      { 
-        newAnimation(boxX);
-      };
-    }
-  }, [boxRef, boxXLoaded])
-
-  function newAnimation(currentBoxX: number) {
-    const svgX = svgRef.current!.getBoundingClientRect().left;
-    const relativePos = currentBoxX - svgX;
-    console.log(`boxX: ${currentBoxX}, svgX: ${svgX}`)
-    if (boxAnimRef.current)
-      boxAnimRef.current!.cancel();
-
-    boxAnimRef.current = boxRef.current!.animate([
-      {
-        transform: `translateX(${relativePos}px)`
-      },
-      {
-        transform: `translateX(${boxX - svgX + 200}px)`
-      }
-    ], { duration: 1000, fill: 'forwards', iterations: 1 });
-    console.log(`Starting animation from: ${relativePos}`);
-    return boxAnimRef.current;
-  }
-
-  function toggleAnimationPlayState() {
-    if (boxRef.current) {
-      if (boxRef.current.style.animationPlayState == 'running')
-      {
-        boxRef.current.style.animationPlayState = 'paused';
-      }
-      else
-      {
-        boxRef.current.style.animationPlayState = 'running'
-      }
-    }
-  }
-
-  function getBoxCoordinates() {
-    const elementRect = boxRef.current!.getBoundingClientRect();
-    setBoxX(elementRect.left);
-    setBoxY(elementRect.top);
-    return elementRect;
-  }
-  useEffect(() => {
-    console.log('boxX updated:', boxX);
-  }, [boxX]);
-
+  
   return (
     <>
       <div>
@@ -119,20 +33,20 @@ function App()
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <button onClick={() => toggleAnimationPlayState()}>
+        <button onClick={() => {}}> {/* fill me in */}
           Toggle Animation State
         </button>
-        <button onClick={() => newAnimation(boxX)}>
+        <button onClick={() => {}}> {/* fill me in */}
           New Box Destination
         </button>
-        <svg style={{'width': '100%','border': '1px solid black'}} ref={svgRef}>
-          <Rect className='animated-element' ref={boxRef}>
+        <svg style={{'width': '100%','border': '1px solid black'}}>
+          <Rect className='animated-element'>
           </Rect>
         </svg>
-        <style ref={styleRef} />
+        <style />
         
-        <p>X: {boxX}</p>
-        <p>Y: {boxY}</p>
+        <p>X: {0}</p>  {/* fill me in */}
+        <p>Y: {0}</p>{/* fill me in */}
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
