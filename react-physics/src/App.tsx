@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -8,6 +8,7 @@ const Rect = styled.rect`
   fill: red;
   width: 100px;
   height: 100px;
+  transform-box: view-box;
 `;
 
 function App() 
@@ -15,50 +16,27 @@ function App()
   const [count, setCount] = useState<number>(0);
   const [boxX, setBoxX] = useState<number>(0);
   const [boxY, setBoxY] = useState<number>(0);
-  const [animX, setAnimX] = useState<number>(0);
+  const [boxXLoaded, setBoxXLoaded] = useState<boolean>(false);
   //const [animY, setAnimY] = useState<number>(0);
   const animationRef = useRef<number>();
   const boxRef = useRef<SVGRectElement | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const boxAnimRef = useRef<Animation | null>(null);
   const styleRef = useRef<HTMLStyleElement | null>(null);
-  const createAnimation = useCallback(() => {
-    // wat do we do with this.
-    if(boxRef.current && boxRef.current.style.animation != 'none')
-    {
-      boxRef.current.style.animation = 'move 2s linear forwards';
-    }
-    
-    if (styleRef.current && styleRef.current.sheet)
-    {
-      styleRef.current.sheet?.cssRules.length > 0 ? styleRef.current.sheet?.deleteRule(0) : null;
-      styleRef.current.sheet?.insertRule(`
-          @keyframes move {
-            0% {
-                transform: translateX(${animX}px);
-            }
-            100% {
-              transform: translateX(${animX + 200}px);
-            }
-          }`, 0);
-    }
-  }, [animX]);
-  
 
   useEffect(() => {
-    if (boxRef.current) {
-      boxRef.current.style.animationPlayState = 'running';
-      getBoxCoordinates();
-      setBoxAnimEndState(boxX);
-    }
+    getBoxCoordinates();
+    setBoxXLoaded(true);
 
-    const animate = () => {
+    const getAnimation = () => {
       getBoxCoordinates();
       // recursive loop
-      animationRef.current = requestAnimationFrame(animate);
+      animationRef.current = requestAnimationFrame(getAnimation);
     };
 
 
     // Start the animation loop
-    animationRef.current = requestAnimationFrame(animate);
+    animationRef.current = requestAnimationFrame(getAnimation);
 
     // Clean up the animation loop on component unmount
     return () => {
@@ -66,13 +44,41 @@ function App()
     };
   }, []); // Empty dependency array to run the effect only once
 
-  function setBoxAnimEndState(x: number)
-  {    
-    if (boxRef.current) {
-      setAnimX(x);
+  useEffect(() => 
+  {
+    if (boxRef.current && boxXLoaded) {
+      boxRef.current.style.animationPlayState = 'running';
+
+      console.log(`Starting animation from: ${boxX}`);
+      boxAnimRef.current = newAnimation(boxX);
+      
+      boxAnimRef.current.onfinish = () =>
+      { 
+        newAnimation(boxX);
+      };
     }
+  }, [boxRef, boxXLoaded])
+
+  function newAnimation(currentBoxX: number) {
+    const svgX = svgRef.current!.getBoundingClientRect().left;
+    const relativePos = currentBoxX - svgX;
+    console.log(`boxX: ${currentBoxX}, svgX: ${svgX}`)
+    if (boxAnimRef.current)
+      boxAnimRef.current!.cancel();
+
+    boxAnimRef.current = boxRef.current!.animate([
+      {
+        transform: `translateX(${relativePos}px)`
+      },
+      {
+        transform: `translateX(${boxX - svgX + 200}px)`
+      }
+    ], { duration: 1000, fill: 'forwards', iterations: 1 });
+    console.log(`Starting animation from: ${relativePos}`);
+    return boxAnimRef.current;
   }
-  function invertState() {
+
+  function toggleAnimationPlayState() {
     if (boxRef.current) {
       if (boxRef.current.style.animationPlayState == 'running')
       {
@@ -84,19 +90,16 @@ function App()
       }
     }
   }
-  
-  useEffect(() => {
-    createAnimation()
-  }, [createAnimation]);
 
   function getBoxCoordinates() {
-    if (boxRef.current) {
-      const elementRect = boxRef.current.getBoundingClientRect();
-      setBoxX(elementRect.left);
-      setBoxY(elementRect.top);
-    }
+    const elementRect = boxRef.current!.getBoundingClientRect();
+    setBoxX(elementRect.left);
+    setBoxY(elementRect.top);
+    return elementRect;
   }
-  
+  useEffect(() => {
+    console.log('boxX updated:', boxX);
+  }, [boxX]);
 
   return (
     <>
@@ -116,14 +119,14 @@ function App()
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <button onClick={() => invertState()}>
+        <button onClick={() => toggleAnimationPlayState()}>
           Toggle Animation State
         </button>
-        <button onClick={() => setBoxAnimEndState(boxX)}>
+        <button onClick={() => newAnimation(boxX)}>
           New Box Destination
         </button>
-        <svg width='full'>
-          <Rect ref={boxRef}>
+        <svg style={{'width': '100%','border': '1px solid black'}} ref={svgRef}>
+          <Rect className='animated-element' ref={boxRef}>
           </Rect>
         </svg>
         <style ref={styleRef} />
