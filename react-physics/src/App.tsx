@@ -1,19 +1,14 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import styled from 'styled-components';
+import { AnimatedRect } from './AnimatedRect';
 
-const Rect = styled.rect`
-  fill: red;
-  width: 100px;
-  height: 100px;
-  transform-box: view-box;
-`;
 
 function App() 
 {
   const [count, setCount] = useState<number>(0);
+  const box1XRef = useRef<number>(0);
   
   return (
     <>
@@ -40,10 +35,11 @@ function App()
           New Box Destination
         </button>
         <svg style={{'width': '100%','border': '1px solid black'}}>
-          <Rect className='animated-element'>
-          </Rect>
+          <AnimatedRect data-testid='box-1' boxXRef={box1XRef}/>
         </svg>
-        <style />
+        <p data-testid='box-1x'>
+          X: {box1XRef.current}
+        </p>
         
         <p>X: {0}</p>  {/* fill me in */}
         <p>Y: {0}</p>{/* fill me in */}
