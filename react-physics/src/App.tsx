@@ -34,15 +34,8 @@ function App()
         <button onClick={() => {}}> {/* fill me in */}
           New Box Destination
         </button>
-        <svg style={{'width': '100%','border': '1px solid black'}}>
-          <AnimatedRect data-testid='box-1' boxXRef={box1XRef}/>
-        </svg>
-        <p data-testid='box-1x'>
-          X: {box1XRef.current}
-        </p>
-        
-        <p>X: {0}</p>  {/* fill me in */}
-        <p>Y: {0}</p>{/* fill me in */}
+        <AnimatedRect data-testid='box-1' boxXRef={box1XRef}/>
+
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
