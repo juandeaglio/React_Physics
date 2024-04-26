@@ -8,7 +8,7 @@ import { AnimatedRect } from './AnimatedRect';
 function App() 
 {
   const [count, setCount] = useState<number>(0);
-  const box1XRef = useRef<number>(0);
+  const numElementsRef = useRef<number>(0);
   
   return (
     <>
@@ -28,13 +28,16 @@ function App()
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
+        <p>
+          # of elements: 1
+        </p>
         <button onClick={() => {}}> {/* fill me in */}
           Toggle Animation State
         </button>
         <button onClick={() => {}}> {/* fill me in */}
           New Box Destination
         </button>
-        <AnimatedRect data-testid='box-1' boxXRef={box1XRef}/>
+        <AnimatedRect numElementsRef={numElementsRef}/>
 
       </div>
       <p className="read-the-docs">

@@ -9,10 +9,10 @@ export const Rect = styled.rect`
 `;
 
 interface AnimatedRectProps extends React.HTMLAttributes<SVGRectElement> {
-    boxXRef: MutableRefObject<number>;
+    numElementsRef: MutableRefObject<number>;
   }
 
-export function AnimatedRect({ boxXRef, ...rest }: AnimatedRectProps) {
+export function AnimatedRect({ numElementsRef, ...rest }: AnimatedRectProps) {
     const animationRef = useRef<number>();
     const boxRef = useRef<SVGRectElement | null>(null);
     const boxXCurrRef = useRef<number>();
@@ -20,8 +20,11 @@ export function AnimatedRect({ boxXRef, ...rest }: AnimatedRectProps) {
     const [boxXLoaded, setBoxXLoaded] = useState<boolean>(false);
     const boxAnimRef = useRef<Animation | null>(null);
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const numElements: number = numElementsRef.current;
+    console.log(numElements); // delete
 
     const newAnimation = useCallback(() => {
+        return null;
         const svgX = svgRef.current!.getBoundingClientRect().left;
         const relativePos = boxXCurrRef.current! - svgX;
         console.log(`boxX: ${relativePos}, svgX: ${svgX}`)
@@ -62,11 +65,6 @@ export function AnimatedRect({ boxXRef, ...rest }: AnimatedRectProps) {
         };
         animationRef.current = requestAnimationFrame(animate);
     }, []);
-    useEffect(() =>
-    {
-        boxXCurrRef.current = boxX;
-        boxXRef.current = boxXCurrRef.current
-    }, [boxX])
     
     return (
         <>
