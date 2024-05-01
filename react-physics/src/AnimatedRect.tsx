@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, MutableRefObject, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 export const Rect = styled.rect`
@@ -8,11 +8,7 @@ export const Rect = styled.rect`
   transform-box: view-box;
 `;
 
-interface AnimatedRectProps extends React.HTMLAttributes<SVGRectElement> {
-    numElementsRef: MutableRefObject<number>;
-  }
-
-export function AnimatedRect({ numElementsRef, ...rest }: AnimatedRectProps) {
+export function AnimatedRect({...props }) {
     const animationRef = useRef<number>();
     const boxRef = useRef<SVGRectElement | null>(null);
     const boxXCurrRef = useRef<number>();
@@ -20,12 +16,10 @@ export function AnimatedRect({ numElementsRef, ...rest }: AnimatedRectProps) {
     const [boxXLoaded, setBoxXLoaded] = useState<boolean>(false);
     const boxAnimRef = useRef<Animation | null>(null);
     const svgRef = useRef<SVGSVGElement | null>(null);
-    const numElements: number = numElementsRef.current;
-    console.log(numElements); // delete
-
+    
     const newAnimation = useCallback(() => {
         return null;
-        const svgX = svgRef.current!.getBoundingClientRect().left;
+        /*const svgX = svgRef.current!.getBoundingClientRect().left;
         const relativePos = boxXCurrRef.current! - svgX;
         console.log(`boxX: ${relativePos}, svgX: ${svgX}`)
 
@@ -43,7 +37,7 @@ export function AnimatedRect({ numElementsRef, ...rest }: AnimatedRectProps) {
         }
         ], { duration: 1000, fill: 'forwards', iterations: 1 });
         console.log(`Starting animation from: ${relativePos}`);
-        return boxAnimRef.current;
+        return boxAnimRef.current;*/
     }, []);
 
     useEffect(() =>
@@ -72,7 +66,7 @@ export function AnimatedRect({ numElementsRef, ...rest }: AnimatedRectProps) {
             X: {boxXCurrRef.current}
         </p>
         <svg style={{'width': '100%','border': '1px solid black'}} ref={svgRef}>
-            <Rect ref={boxRef} {...rest} /> 
+            <Rect ref={boxRef} {...props} /> 
         </svg>
         </>
 );

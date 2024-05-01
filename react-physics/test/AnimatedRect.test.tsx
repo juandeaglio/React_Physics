@@ -4,7 +4,7 @@
 import '@testing-library/jest-dom'
 // NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
-import { ReactNode, useRef } from 'react';
+import { ReactNode } from 'react';
 import {render, screen} from '@testing-library/react';
 import { AnimatedRect } from '../src/AnimatedRect';
 
@@ -14,11 +14,9 @@ interface AppProps {
 
 function App({children}: AppProps)
 {
-    const numElementsRef = useRef<number>(1);
     return(
         <div>
-            <p id='num-of-elements'>{numElementsRef.current}</p>
-            <AnimatedRect numElementsRef={numElementsRef}></AnimatedRect>
+            <AnimatedRect />
             {children}
         </div>
     );
@@ -27,8 +25,8 @@ function App({children}: AppProps)
 test('shows the children when the checkbox is checked', () => {
     const testMessage = 'Test Message'
     render(<App>{testMessage}</App>)
-  
+
     // query* functions will return the element or null if it cannot be found
     // get* functions will return the element or throw an error if it cannot be found
     expect(screen.queryByText(testMessage)).toBeVisible()
-  })
+})
