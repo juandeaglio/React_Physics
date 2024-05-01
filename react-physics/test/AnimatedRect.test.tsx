@@ -4,7 +4,7 @@
 import '@testing-library/jest-dom'
 // NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import {render, screen} from '@testing-library/react';
 import { AnimatedRect } from '../src/AnimatedRect';
 
@@ -14,15 +14,17 @@ interface AppProps {
 
 function App({children}: AppProps)
 {
+    const rect1 = useRef<SVGRectElement>(null);
+
     return(
         <div>
-            <AnimatedRect />
+            <AnimatedRect ref={rect1} />
             {children}
         </div>
     );
 }
 
-test('shows the children when the checkbox is checked', () => {
+test('shows an animatedrect', () => {
     const testMessage = 'Test Message'
     render(<App>{testMessage}</App>)
 
