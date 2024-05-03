@@ -16,5 +16,6 @@
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
       // Add any custom ESLint rules here
+      "@typescript-eslint/no-explicit-any": "warn"
     }
 }

@@ -1,19 +1,37 @@
-import { RefObject, useEffect } from "react";
-import assert from 'assert';
-export interface AnimatableElements{
-    ref: RefObject<SVGRectElement>;
+import { RefObject } from 'react';
+import { MockedRect } from '../test/unit/Collision.test';
+export interface ManagedArray {
+    references?: Array<RefObject<SVGRectElement> | RenderableElement>; // refactorable?
 }
 
-export interface CollisionsProps {
-    references?: Array<RefObject<SVGRectElement>>; // refactorable?
+export class RenderableElement{
+    current: any
+    constructor(elemRect: () =>  MockedRect)
+    {
+        this.current = {getClientBoundingRect: elemRect}   
+    }
 }
 
-export const Collisions: React.FC<CollisionsProps> = ({references}: CollisionsProps) => {
-    const elements = references;
-    useEffect(() => {
-        assert(elements!.length > 0, 'must manage at least one element')
-    }, []);
-    return (
-        <></>
-    );
+export class Collisions{
+    elements: Array<RefObject<SVGRectElement> | RenderableElement>;
+    constructor(managed?: ManagedArray){
+        if(managed && managed.references)
+        {
+            this.elements = managed.references;
+        }
+        else
+        {
+            this.elements = [];
+        }
+    }
+
+    add(element: RefObject<SVGRectElement> | RenderableElement)
+    {
+        this.elements.push(element);
+    }
+
+    __getElements(): Array<RefObject<SVGRectElement> | RenderableElement>  
+    {
+        return this.elements;
+    }
 }

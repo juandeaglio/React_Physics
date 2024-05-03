@@ -17,12 +17,14 @@ function App({children}: AppProps)
     const rect2 = useRef<SVGRectElement>(null);
 
     const managed: Array<RefObject<SVGRectElement>> = [rect1, rect2];
+    const collisionListener: Collisions = new Collisions({references: managed});
     return(
         <div>
-            <Collisions references={managed}/>
+            <p data-testd="rect1">
+                {collisionListener.__getElements()[0]}
+            </p>
             <div>
                 <AnimatedRect ref={rect1}/>
-                <AnimatedRect ref={rect2}/>
                 {children}
             </div>
         </div>
@@ -30,7 +32,6 @@ function App({children}: AppProps)
 }
 
 
-test('Detect collisions between two boxes', () => {
+test('Collisions reads position of a rect', () => {
     render(<App></App>)
-
 })
