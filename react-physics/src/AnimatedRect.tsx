@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import { RefObject, forwardRef } from 'react';
 import styled from 'styled-components';
 
 export const Rect = styled.rect`
@@ -12,10 +12,10 @@ export interface AnimatedRectProps {
   ref?: RefObject<SVGRectElement>;
 }
 
-export const AnimatedRect: React.FC<AnimatedRectProps> = ({ref}) => {
+export const AnimatedRect= forwardRef<SVGRectElement, AnimatedRectProps>((_, ref) => {
   return (
     <svg role="animatable"  style={{}}>
       <Rect ref={ref} /> 
     </svg>
   );
-};
+});
