@@ -13,7 +13,7 @@ interface AppProps {
 
 function App({children}: AppProps)
 {
-    const rect1 = useRef<SVGRectElement>(null); // this type is going to change, lets abstract
+    const rect1 = useRef<SVGRectElement>(null); // I predict type is going to change, consider abstract
     const rect2 = useRef<SVGRectElement>(null);
 
     const managed: Array<RefObject<SVGRectElement>> = [rect1, rect2];
@@ -32,4 +32,5 @@ function App({children}: AppProps)
 
 test('Detect collisions between two boxes', () => {
     render(<App></App>)
+
 })
