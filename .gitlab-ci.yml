@@ -31,15 +31,15 @@ unit tests:
   before_script:
     - npm install
   script:
-    - cd ./react_physics
     - npm run build
     - npm run test
 
 playwright tests:
   stage: playwright-test
   image: mcr.microsoft.com/playwright:v1.40.0-jammy
+  before_script:
+    - npm install
   script:
-      - cd ./react_physics
       - npx run playwright
 
 
