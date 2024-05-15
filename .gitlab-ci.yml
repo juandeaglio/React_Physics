@@ -28,7 +28,6 @@ unit tests:
   stage: test
   image: node:20-alpine
   script:
-    - cd react-physics
     - npm install
     - npm run build
     - npm run test
@@ -37,6 +36,5 @@ playwright tests:
   stage: playwright-test
   image: mcr.microsoft.com/playwright:v1.40.0-jammy
   script:
-      - cd react-physics
       - npm install
       - npx run playwright
