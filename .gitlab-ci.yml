@@ -32,6 +32,7 @@ unit tests:
     - npm install
   script:
     - cd react-physics
+    - npm install
     - npm run build
     - npm run test
 
@@ -42,4 +43,5 @@ playwright tests:
     - npm install
   script:
       - cd react-physics
+      - npm install
       - npx run playwright
