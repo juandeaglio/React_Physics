@@ -28,8 +28,6 @@ cache:
 unit tests:
   stage: test
   image: node:18-alpine
-  before_script:
-    - npm install
   script:
     - cd react-physics
     - npm install
@@ -39,8 +37,6 @@ unit tests:
 playwright tests:
   stage: playwright-test
   image: mcr.microsoft.com/playwright:v1.40.0-jammy
-  before_script:
-    - npm install
   script:
       - cd react-physics
       - npm install
