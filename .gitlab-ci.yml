@@ -30,10 +30,10 @@ unit tests:
   image: node:18-alpine
   before_script:
     - npm install
-    - npx tsc
   script:
-    - npm run --prefix react-physics build
-    - npm run --prefix react-physics test
+    - cd react-physics
+    - npm run build
+    - npm run test
 
 playwright tests:
   stage: playwright-test
