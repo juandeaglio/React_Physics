@@ -30,6 +30,7 @@ unit tests:
   image: node:18-alpine
   before_script:
     - npm install
+    - npx tsc
   script:
     - npm run --prefix react-physics build
     - npm run --prefix react-physics test
