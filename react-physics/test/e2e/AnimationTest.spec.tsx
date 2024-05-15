@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test('Verify an animation moves 100px to right', async ({ page }) => {
+test('Verify an animation moves 10px upper right', async ({ page }) => {
   await page.goto('http://localhost:3000');
-  const rect = page.getByTestId('box-1');
+  const rect = page.getByTestId('Box-1');
   await expect(rect).toBeVisible();
-  const box1X = page.getByTestId('box-1x');
-  await expect(box1X).toBeVisible();
+  await page.waitForTimeout(1100);
+
+  const resultX = await page.getByTestId('result-Box-1-x').first().textContent() ?? '0';
+  expect(parseInt(resultX)).toBeCloseTo(7.07, 2)
 });

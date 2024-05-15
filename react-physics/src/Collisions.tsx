@@ -25,7 +25,7 @@ export class Collisions{
         }
     }
 
-    add(element: RefObject<SVGRectElement> | RenderableElement)
+    trackElement(element: RefObject<SVGRectElement> | RenderableElement)
     {
         this.elements.push(element);
     }

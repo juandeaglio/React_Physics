@@ -38,7 +38,7 @@ describe('collisions class', () => {
         test('Collisions contains a single renderableElement', () => {
                 const elem: RenderableElement = new RenderableElement(mockedGetClientBoundingRect);
                 const collisions = new Collisions();
-                collisions.add(elem);
+                collisions.trackElement(elem);
                 expect(collisions.__getElements()[0].current.getClientBoundingRect().width).toBe(100);
                 expect(collisions.__getElements()[0].current.getClientBoundingRect().height).toBe(100);
         });
