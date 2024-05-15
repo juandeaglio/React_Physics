@@ -28,6 +28,7 @@ unit tests:
   stage: test
   image: node:20-alpine
   script:
+    - npm cache clean --force
     - npm config set prefix ~/.npm-global
     - export PATH="$PATH:$HOME/.npm-global/bin"
     - npm install
