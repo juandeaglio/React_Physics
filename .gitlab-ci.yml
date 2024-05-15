@@ -31,8 +31,8 @@ unit tests:
   before_script:
     - npm install
   script:
-    - npm run build
-    - npm run test
+    - npm run --prefix react-physics build
+    - npm run --prefix react-physics test
 
 playwright tests:
   stage: playwright-test
@@ -40,16 +40,5 @@ playwright tests:
   before_script:
     - npm install
   script:
+      - cd react-physics
       - npx run playwright
-
-
-
-build docker image:
-  stage: dockerimage
-  image: docker
-  services:
-    - docker:dind
-  script:
-    - echo $PAT | docker login ghcr.io -u $REGISTRY_USER --password-stdin
-    - docker image build -t $REGISTRY_URL:latest .
-    - docker push $REGISTRY_URL:latest
