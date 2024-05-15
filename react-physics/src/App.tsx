@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { AnimatedRect } from './AnimatedRect';
+import { AnimatedRect, Vector } from './AnimatedRect';
 
 
 function App() 
@@ -11,6 +11,8 @@ function App()
   const rect1 = useRef<SVGRectElement>(null);
   const [initialBox1X, setInitialBox1X] = useState<number>(0);
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
+  const [transitionState, setTransitionState] = useState<string>();
+  const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
 
   useEffect(() =>
   {
@@ -19,12 +21,14 @@ function App()
 
   useEffect(() =>
   {
+    setVectorState({x: Math.sqrt(100/2), y: Math.sqrt(100/2) });
+    setTransitionState("transform 1s linear 0s");
     function measureRect()
     {
       setTerminalBox1X(rect1.current!.getBoundingClientRect().right);
     }
     setTimeout(measureRect, 1000);
-  }, [])
+  }, [initialBox1X])
   
   return (
     <>
@@ -53,7 +57,16 @@ function App()
         <button onClick={() => {}}> {/* fill me in */}
           New Box Destination
         </button>
-        <AnimatedRect ref={rect1} velocityVector={{x: Math.sqrt(100/2), y: Math.sqrt(100/2) }} moreProps={{"data-testid": "Box-1"}}/>
+        <AnimatedRect 
+        ref={rect1} 
+        velocityVector={vectorState} 
+        moreProps={
+          {
+            "data-testid": "Box-1",
+            transition: transitionState
+          }
+        }
+        />
         <p data-testid="initial-Box-1-x">
           {initialBox1X}
         </p>

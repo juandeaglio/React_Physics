@@ -15,7 +15,13 @@ function App({children}: AppProps)
     const rect1 = useRef<SVGRectElement>(null);
     return(
         <div>
-            <AnimatedRect ref={rect1} velocityVector={{x: Math.sqrt(100/2), y: Math.sqrt(100/2) }} moreProps={{"data-testid": "Box-1"}}/>
+            <AnimatedRect ref={rect1} 
+                velocityVector={{x: Math.sqrt(100/2), y: Math.sqrt(100/2) }} 
+                moreProps={{
+                    "data-testid": "Box-1", 
+                    transition: "transform 1s linear 0s"
+                    }}
+            />
             {children}
         </div>
     );
@@ -84,5 +90,9 @@ describe('animatedrect component', () => {
         const expectedTransform: string= `translate(${expectedXTransform}px, ${expectedYTransform}px)`;
         const actualTransform = element.style.transform;
         expect(actualTransform).toBe(expectedTransform);
+
+        const actualTransition = element.style.transition;
+        expect(actualTransition).toBe("transform 1s linear 0s");
+
     })
 });

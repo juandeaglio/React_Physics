@@ -10,6 +10,7 @@ export const Rect = styled.rect`
 export interface GenericProps
 {
   "data-testid"?: string;
+  transition?: string;
 }
 export interface AnimatedRectProps {
   ref?: RefObject<SVGRectElement>;
@@ -53,7 +54,15 @@ export const AnimatedRect= forwardRef<SVGRectElement, AnimatedRectProps>((props,
   }
   
   return (
-    <svg data-testid={props.moreProps?.['data-testid']} role="animatable"  style={{transform: `translate(${currentVector.x}px, ${currentVector.y}px)`}}>
+    <svg 
+      data-testid={props.moreProps?.['data-testid']} 
+      role="animatable"  
+      style={
+        {
+          transform: `translate(${currentVector.x}px, ${currentVector.y}px)`, 
+          transition: `${props.moreProps?.['transition']}`
+        }}
+    >
       <Rect ref={ref}/> 
     </svg>
   );
