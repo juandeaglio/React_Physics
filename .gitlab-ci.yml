@@ -1,0 +1,55 @@
+# This file is a template, and might need editing before it works on your project.
+# You can copy and paste this template into a new `.gitlab-ci.yml` file.
+# You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
+#
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Nodejs.gitlab-ci.yml
+
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+stages:
+  - test
+  - playwright-test
+  - dockerimage
+
+cache:
+  paths:
+    - node_modules/
+
+# Pick zero or more services to be used on all builds.
+# Only needed when using a docker container to run your tests in.
+# Check out: https://docs.gitlab.com/ee/ci/services/index.html
+
+# This folder is cached between builds
+# https://docs.gitlab.com/ee/ci/yaml/index.html#cache
+
+unit tests:
+  stage: test
+  image: node:18-alpine
+  before_script:
+    - npm install
+  script:
+    - cd ./react_physics
+    - npm run build
+    - npm run test
+
+playwright tests:
+  stage: playwright-test
+  image: mcr.microsoft.com/playwright:v1.40.0-jammy
+  script:
+      - cd ./react_physics
+      - npx run playwright
+
+
+
+build docker image:
+  stage: dockerimage
+  image: docker
+  services:
+    - docker:dind
+  script:
+    - echo $PAT | docker login ghcr.io -u $REGISTRY_USER --password-stdin
+    - docker image build -t $REGISTRY_URL:latest .
+    - docker push $REGISTRY_URL:latest
