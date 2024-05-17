@@ -44,6 +44,8 @@ playwright tests:
     - export PATH="$PATH:$HOME/.npm-global/bin"
     - npm install
     - npm i @rollup/rollup-linux-x64-gnu
+    - npm install -g serve  # Install 'serve' package globally
+
     # - npm run build # Comment out or remove this line temporarily
     - npm install playwright
     - npx playwright test
