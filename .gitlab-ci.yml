@@ -32,7 +32,7 @@ unit tests:
     - npm config set prefix ~/.npm-global
     - export PATH="$PATH:$HOME/.npm-global/bin"
     - npm install
-    - npm run build # Comment out or remove this line temporarily
+    # - npm run build # Comment out or remove this line temporarily
     - npm run test
 
 playwright tests:
