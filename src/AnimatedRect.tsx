@@ -1,4 +1,4 @@
-import { RefObject, forwardRef } from 'react';
+import { useState, useEffect, RefObject, forwardRef } from 'react';
 import styled from 'styled-components';
 
 export const Rect = styled.rect`
@@ -43,6 +43,9 @@ export class Vector
 }
 
 export const AnimatedRect= forwardRef<SVGRectElement, AnimatedRectProps>((props, ref) => {
+  const [transform, setTransform] = useState<string>("");
+  const [transition, setTransition] = useState<string>("");
+  
   let currentVector: Vector;
   if(props.velocityVector)
   {
@@ -52,15 +55,22 @@ export const AnimatedRect= forwardRef<SVGRectElement, AnimatedRectProps>((props,
   {
     currentVector = new Vector();
   }
-  
+  useEffect(() => 
+  {
+    if(ref)
+    {
+      setTransform(`translate(${currentVector.x}px, ${currentVector.y}px)`);
+      setTransition("transform 1s linear 0s");
+    }
+  }, [ref, currentVector, props.moreProps])
   return (
     <svg 
       data-testid={props.moreProps?.['data-testid']} 
       role="animatable"  
       style={
         {
-          transform: `translate(${currentVector.x}px, ${currentVector.y}px)`, 
-          transition: `${props.moreProps?.['transition']}`
+          transform: transform,
+          transition: transition
         }}
     >
       <Rect ref={ref}/> 

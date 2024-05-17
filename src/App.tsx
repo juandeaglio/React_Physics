@@ -7,11 +7,9 @@ import { AnimatedRect, Vector } from './AnimatedRect';
 
 function App() 
 {
-  const [count, setCount] = useState<number>(0);
   const rect1 = useRef<SVGRectElement>(null);
   const [initialBox1X, setInitialBox1X] = useState<number>(0);
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
-  const [transitionState, setTransitionState] = useState<string>();
   const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
 
   useEffect(() =>
@@ -22,7 +20,6 @@ function App()
   useEffect(() =>
   {
     setVectorState({x: Math.sqrt(100/2), y: Math.sqrt(100/2) });
-    setTransitionState("transform 1s linear 0s");
     function measureRect()
     {
       setTerminalBox1X(rect1.current!.getBoundingClientRect().right);
@@ -42,28 +39,12 @@ function App()
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-        <p>
-          # of elements: 1
-        </p>
-        <button onClick={() => {}}> {/* fill me in */}
-          Toggle Animation State
-        </button>
-        <button onClick={() => {}}> {/* fill me in */}
-          New Box Destination
-        </button>
         <AnimatedRect 
         ref={rect1} 
         velocityVector={vectorState} 
         moreProps={
           {
             "data-testid": "Box-1",
-            transition: transitionState
           }
         }
         />
@@ -77,9 +58,6 @@ function App()
           {terminalBox1X - initialBox1X}
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
