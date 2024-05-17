@@ -10,7 +10,7 @@
 # Official framework image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/node/tags/
 stages:
-  # - test
+  - test
   - playwright-test
 
 cache:
@@ -24,16 +24,15 @@ cache:
 # This folder is cached between builds
 # https://docs.gitlab.com/ee/ci/yaml/index.html#cache
 
-#unit tests:
-#  stage: test
-#  image: node:18
-#  script:
-#    - npm cache clean --force
-#    - npm config set prefix ~/.npm-global
-#    - export PATH="$PATH:$HOME/.npm-global/bin"
-#    - npm install
-#    # - npm run build # Comment out or remove this line temporarily
-#    - npm run test
+unit tests:
+  stage: test
+  image: node:18
+  script:
+    - npm cache clean --force
+    - npm config set prefix ~/.npm-global
+    - export PATH="$PATH:$HOME/.npm-global/bin"
+    - npm install
+    - npm run test
 
 playwright tests:
   stage: playwright-test
@@ -43,10 +42,9 @@ playwright tests:
     - npm config set prefix ~/.npm-global
     - export PATH="$PATH:$HOME/.npm-global/bin"
     - npm install
-    - npm i @rollup/rollup-linux-x64-gnu
+    - npm i @rollup/rollup-linux-x64-gnu # only needed on linux environments, not windows
     - npm install -g serve  # Install 'serve' package globally
     - npx playwright install
     - npx playwright install-deps   
-    # - npm run build # Comment out or remove this line temporarily
     - npm install playwright
     - npx playwright test
