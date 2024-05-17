@@ -26,13 +26,13 @@ cache:
 
 unit tests:
   stage: test
-  image: node:18-alpine
+  image: node:18
   script:
     - npm cache clean --force
     - npm config set prefix ~/.npm-global
     - export PATH="$PATH:$HOME/.npm-global/bin"
     - npm install
-    - npm run build
+    - npm run build # Comment out or remove this line temporarily
     - npm run test
 
 playwright tests:
