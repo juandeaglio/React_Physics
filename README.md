@@ -5,7 +5,7 @@ The intention for this project is to provide a common set of tools for creating 
 
 In other words, we can add 2-D physics to HTML elements and actively simulate it in the browser. 
 
-For the programmer, a typical usage of the library would involve using one of the many built-in functional components part of the library (or perhaps I can find a way to build components dynamically?). For now, HTML elments are animated based on how pre-defined React components work. Visit [here](###code-example) for a code example.
+For the programmer, a typical usage of the library would involve using one of the many built-in functional components part of the library (or perhaps I can find a way to build components dynamically?). For now, HTML elments are animated based on how pre-defined React components work. Visit [here](#code-example) for a code example.
 
 ### Supported HTML Elements
 - <svg> with a <rect> element within via <AnimatedRect> functional component.
