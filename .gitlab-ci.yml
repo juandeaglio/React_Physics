@@ -42,7 +42,7 @@ playwright tests:
     - npm config set prefix ~/.npm-global
     - export PATH="$PATH:$HOME/.npm-global/bin"
     - npm install
-    - npm i @rollup/rollup-linux-x64-gnu
+    - npm i @rollup/rollup-linux-x64-gnu # only needed on linux environments, not windows
     - npm install -g serve  # Install 'serve' package globally
     - npx playwright install
     - npx playwright install-deps   
