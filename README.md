@@ -19,61 +19,15 @@ For reference, you can view my publically available GitLab CI / CD pipeline to l
 https://gitlab.com/learningtcr/react-physics/-/blob/main/.gitlab-ci.yml?ref_type=heads
 
 ### Code Example
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
-
-.
+```
+<AnimatedRect 
+        ref={rect1} 
+        velocityVector={vectorState} 
+        moreProps={
+          {
+            "data-testid": "Box-1",
+            transition: transitionState
+          }
+        }
+/>
+```
