@@ -37,7 +37,12 @@ unit tests:
 
 playwright tests:
   stage: playwright-test
-  image: mcr.microsoft.com/playwright:v1.40.0-jammy
+  image: node:18
   script:
-      - npm install
-      - npx run playwright
+    - npm cache clean --force
+    - npm config set prefix ~/.npm-global
+    - export PATH="$PATH:$HOME/.npm-global/bin"
+    - npm install
+    # - npm run build # Comment out or remove this line temporarily
+    - npm install playwright
+    - npx playwright test
