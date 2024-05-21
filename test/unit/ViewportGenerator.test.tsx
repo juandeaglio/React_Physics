@@ -6,7 +6,7 @@ import { generateViewport, ViewportBarriers } from '../../src/ViewportBarriers';
 import { ScreenLimitations } from '../Collisions.test';
 
 
-describe('collisionCalculator class', () => {
+describe('generate viewports based on screen size', () => {
     const screenWidth = new ScreenLimitations().screenWidth;
     const screenHeight = new ScreenLimitations().screenHeight;
 
