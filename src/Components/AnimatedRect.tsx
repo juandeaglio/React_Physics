@@ -60,7 +60,9 @@ export const AnimatedRect= forwardRef<SVGRectElement, AnimatedRectProps>((props,
     if(ref)
     {
       setTransform(`translate(${currentVector.x}px, ${currentVector.y}px)`);
-      setTransition("transform 1s linear 0s");
+      const duration = 1;
+      const delay = 0;
+      setTransition(`transform ${duration}s linear ${delay}s`);
     }
   }, [ref, currentVector, props.moreProps])
   return (

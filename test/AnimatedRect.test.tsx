@@ -3,7 +3,7 @@ import '@testing-library/jest-dom'
 import { ReactNode, useRef } from 'react';
 import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
-import { AnimatedRect } from '../src/AnimatedRect';
+import { AnimatedRect } from '../src/Components/AnimatedRect';
 import {describe, test} from '@jest/globals';
 
 interface AppProps {
@@ -27,7 +27,7 @@ function App({children}: AppProps)
     );
 }
 
-class FakedDOMRect{
+export class FakedDOMRect{
     x: number;
     y: number;
     width: number;

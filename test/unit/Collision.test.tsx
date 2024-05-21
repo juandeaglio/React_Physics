@@ -1,6 +1,6 @@
 import {describe, expect, test} from '@jest/globals';
-import { Collisions, RenderableElement } from '../../src/Collisions';
-import { ManagedArray } from '../../src/Collisions';
+import { Collisions, RenderableElement } from '../../src/Components/Collisions';
+import { ManagedArray } from '../../src/Components/Collisions';
 
 
 export interface MockedRect{
@@ -13,20 +13,18 @@ export interface MockedRect{
         width: number;
         height: number;
 }
-export function mockedGetClientBoundingRect(): MockedRect {
-        const top = 0;
-        const left = 0;
-        const right = 100;
-        const bottom = 100;
-        return { 
-                top: top,
-                left: left,
-                right: right,
-                bottom: bottom,
-                width: (right-left),
-                height: (bottom-top),
-                x: left,
-                y: top,
+export function createdMockedgetBoundingClientRect(x: number, y: number, width: number, height: number) {
+        return function () {
+                return {
+                x,
+                y,
+                width,
+                height,
+                top: y,
+                right: x + width,
+                bottom: y + height,
+                left: x,
+                };
         }
 }
 
@@ -36,10 +34,22 @@ describe('collisions class', () => {
                 expect(new Collisions(empty)).toBeTruthy();
         });
         test('Collisions contains a single renderableElement', () => {
-                const elem: RenderableElement = new RenderableElement(mockedGetClientBoundingRect);
+                const elem: RenderableElement = new RenderableElement(createdMockedgetBoundingClientRect(0,0,100,100));
                 const collisions = new Collisions();
                 collisions.trackElement(elem);
-                expect(collisions.__getElements()[0].current.getClientBoundingRect().width).toBe(100);
-                expect(collisions.__getElements()[0].current.getClientBoundingRect().height).toBe(100);
+                expect(collisions.__getElements()[0].current.getBoundingClientRect().width).toBe(100);
+                expect(collisions.__getElements()[0].current.getBoundingClientRect().height).toBe(100);
+        });
+
+        test('Detects a single collision', () => {
+                const collisions = new Collisions();
+
+                const elem: RenderableElement = new RenderableElement(createdMockedgetBoundingClientRect(0,0,100,100));
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedgetBoundingClientRect(99,99,100,100));
+
+                collisions.trackElement(elem);
+                collisions.trackElement(overlappingElement);
+                expect(collisions.isColliding(elem, overlappingElement)).toBe(true);
+                expect(collisions.totalCollisions).toBe(1);
         });
 });
