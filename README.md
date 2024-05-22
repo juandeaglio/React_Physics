@@ -31,3 +31,4 @@ https://gitlab.com/learningtcr/react-physics/-/blob/main/.gitlab-ci.yml?ref_type
         }
 />
 ```
+See App.tsx for a more fleshed-out example of a typical app featuring the react physics decoration and the e2e/AnimationTest.spec.tsx test.
