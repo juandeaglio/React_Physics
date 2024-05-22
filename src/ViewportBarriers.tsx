@@ -1,16 +1,16 @@
 import { RefObject, useEffect } from "react"
 import { RenderableElement } from "./Components/Collisions"
-import { createdMockedgetBoundingClientRect } from "../test/unit/Collision.test";
+import { createdMockedGetBoundingClientRect } from "../test/unit/Collision.test";
 
 export function generateViewport(width: number, height: number): ViewportBarriers
 {    
     const barrierHeight: number = 100;
     const barrierWidth: number = 100;
     return {
-        top: new RenderableElement(createdMockedgetBoundingClientRect(0, -barrierHeight, width, barrierHeight)),
-        bottom: new RenderableElement(createdMockedgetBoundingClientRect(0, height, width, barrierHeight)),
-        left: new RenderableElement(createdMockedgetBoundingClientRect(-100, 0, barrierWidth, height)),
-        right: new RenderableElement(createdMockedgetBoundingClientRect(width, 0, barrierWidth, height)),
+        top: new RenderableElement(createdMockedGetBoundingClientRect(0, -barrierHeight, width, barrierHeight)),
+        bottom: new RenderableElement(createdMockedGetBoundingClientRect(0, height, width, barrierHeight)),
+        left: new RenderableElement(createdMockedGetBoundingClientRect(-100, 0, barrierWidth, height)),
+        right: new RenderableElement(createdMockedGetBoundingClientRect(width, 0, barrierWidth, height)),
     }
 }
 

@@ -1,19 +1,8 @@
-import {describe, expect, test} from '@jest/globals';
+
 import { Collisions, RenderableElement } from '../../src/Components/Collisions';
 import { ManagedArray } from '../../src/Components/Collisions';
 
-
-export interface MockedRect{
-        x: number;
-        y: number;
-        top: number;
-        left: number;
-        right: number;
-        bottom: number;
-        width: number;
-        height: number;
-}
-export function createdMockedgetBoundingClientRect(x: number, y: number, width: number, height: number) {
+export function createdMockedGetBoundingClientRect(x: number, y: number, width: number, height: number) {
         return function () {
                 return {
                 x,
@@ -28,13 +17,25 @@ export function createdMockedgetBoundingClientRect(x: number, y: number, width: 
         }
 }
 
+export interface MockedRect{
+        x: number;
+        y: number;
+        top: number;
+        left: number;
+        right: number;
+        bottom: number;
+        width: number;
+        height: number;
+}
+
+
 describe('collisions class', () => {
         test('Collisions takes in array of elements', () => {
                 const empty: ManagedArray = {references: []};
                 expect(new Collisions(empty)).toBeTruthy();
         });
         test('Collisions contains a single renderableElement', () => {
-                const elem: RenderableElement = new RenderableElement(createdMockedgetBoundingClientRect(0,0,100,100));
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100));
                 const collisions = new Collisions();
                 collisions.trackElement(elem);
                 expect(collisions.__getElements()[0].current.getBoundingClientRect().width).toBe(100);
@@ -44,8 +45,8 @@ describe('collisions class', () => {
         test('Detects a single collision', () => {
                 const collisions = new Collisions();
 
-                const elem: RenderableElement = new RenderableElement(createdMockedgetBoundingClientRect(0,0,100,100));
-                const overlappingElement: RenderableElement = new RenderableElement(createdMockedgetBoundingClientRect(99,99,100,100));
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100));
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100));
 
                 collisions.trackElement(elem);
                 collisions.trackElement(overlappingElement);

@@ -2,7 +2,7 @@ import { RenderableElement } from "./Collisions";
 import { RefObject } from "react";
 
 export interface StaticProps{
-    "data-testid": string;
+    "data-testid"?: string;
     barrierProps: RenderableElement | RefObject<SVGRectElement>
 }
 

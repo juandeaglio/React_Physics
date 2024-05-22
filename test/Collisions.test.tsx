@@ -4,10 +4,10 @@ import '@testing-library/jest-dom'
 import { ReactNode, useRef } from 'react';
 import {render} from '@testing-library/react';
 import { AnimatedRect} from '../src/Components/AnimatedRect';
-import {describe, test} from '@jest/globals';
+import { describe, expect, test} from '@jest/globals';
 import { screen } from '@testing-library/dom';
 import { Collisions, RenderableElement } from '../src/Components/Collisions';
-import { createdMockedgetBoundingClientRect } from './unit/Collision.test';
+import { createdMockedGetBoundingClientRect } from './unit/Collision.test';
 import { ViewportBarriers, generateViewport} from '../src/ViewportBarriers';
 
 interface AppProps {
@@ -62,7 +62,7 @@ describe('collisionCalculator class', () => {
         render(<App></App>);
         const element = screen.getByTestId("Box-1").style.transform;
         const xActual = parseTransform(element)[0];
-        const box1Rect: RenderableElement = new RenderableElement(createdMockedgetBoundingClientRect(xActual, 0, rectWidth, rectWidth));
+        const box1Rect: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(xActual, 0, rectWidth, rectWidth));
         const viewPortRect: RenderableElement = viewPortBarriers.right;
         const collisionCalculator = new Collisions();
     

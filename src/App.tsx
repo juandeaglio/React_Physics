@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import Test1 from './Playwright Fixtures/Test1';
+import Test2 from './Playwright Fixtures/Test2';
 
 
 function App() {

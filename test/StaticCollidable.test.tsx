@@ -3,15 +3,14 @@ import '@testing-library/jest-dom'
 import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
-import {describe, test} from '@jest/globals';
 import { StaticCollidable } from '../src/Components/StaticCollidable';
-import { createdMockedgetBoundingClientRect } from './unit/Collision.test';
+import { createdMockedGetBoundingClientRect } from './unit/Collision.test';
 import { RenderableElement } from '../src/Components/Collisions';
 interface AppProps {
     children?: ReactNode;
 }
 
-const rect = new RenderableElement(createdMockedgetBoundingClientRect(-100, 0, 100, 1000));
+const rect = new RenderableElement(createdMockedGetBoundingClientRect(-100, 0, 100, 1000));
 
 function App({children}: AppProps)
 {
