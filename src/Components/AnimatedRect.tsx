@@ -42,7 +42,7 @@ export class Vector
   }
 }
 
-export const AnimatedRect= forwardRef<SVGRectElement, AnimatedRectProps>((props, ref) => {
+export const AnimatedRect = forwardRef<SVGRectElement, AnimatedRectProps>((props, ref) => {
   const [transform, setTransform] = useState<string>("");
   const [transition, setTransition] = useState<string>("");
   

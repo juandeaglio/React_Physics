@@ -3,7 +3,7 @@ import reactLogo from '../assets/react.svg';
 import viteLogo from '../../public/vite.svg';
 import { AnimatedRect, Vector } from '../Components/AnimatedRect';
 import { useWindowAsCollisionBarriers, ViewportBarriers } from '../ViewportBarriers';
-
+import { StaticCollidable } from '../Components/StaticCollidable';
 
 
 
@@ -38,10 +38,12 @@ function Test2()
     if (barriers)
     {
       return (
-        <Barrier barrierProps={barriers.top}></Barrier>
-        <Barrier barrierProps={barriers.bottom}></Barrier>
-        <Barrier barrierProps={barriers.left}></Barrier>
-        <Barrier barrierProps={barriers.right}></Barrier>
+        <>
+          <StaticCollidable barrierProps={barriers.top}></StaticCollidable>
+          <StaticCollidable barrierProps={barriers.bottom}></StaticCollidable>
+          <StaticCollidable barrierProps={barriers.left}></StaticCollidable>
+          <StaticCollidable barrierProps={barriers.right}></StaticCollidable>
+        </>
       )
     }
   }

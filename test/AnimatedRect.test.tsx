@@ -27,6 +27,7 @@ function App({children}: AppProps)
     );
 }
 
+
 export class FakedDOMRect{
     x: number;
     y: number;
@@ -49,12 +50,6 @@ export class FakedDOMRect{
         this.bottom = y + height;
       }
 }
-
-/*function getFakedDocumentRect(): FakedDOMRect
-{
-    const faked: FakedDOMRect =  new FakedDOMRect(0, 0, 1920, 1080);
-    return faked;
-}*/
 
 function getFakedClientRect(virtualElement: Element | null): FakedDOMRect | undefined
 {
