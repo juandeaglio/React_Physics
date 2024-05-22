@@ -1,4 +1,4 @@
-import { RefObject } from "react"
+import { RefObject, useEffect } from "react"
 import { RenderableElement } from "./Components/Collisions"
 import { createdMockedgetBoundingClientRect } from "../test/unit/Collision.test";
 
@@ -20,4 +20,21 @@ export interface ViewportBarriers
     bottom: RenderableElement | RefObject<SVGRectElement>,
     left: RenderableElement | RefObject<SVGRectElement>,
     right: RenderableElement | RefObject<SVGRectElement>,
+}
+
+export function useWindowAsCollisionBarriers(barriers: ViewportBarriers | undefined, setBarriers: React.Dispatch<React.SetStateAction<ViewportBarriers | undefined>>)
+{
+    useEffect(() =>
+    {
+        // Add window boundaries.
+        function handleResize()
+        {
+            setBarriers(generateViewport(window.innerHeight, window.innerWidth));
+        }
+        // Add event listener
+        window.addEventListener("resize", handleResize);
+        // Call handler right away so state gets updated with initial window size
+        handleResize();
+    })
+    return barriers
 }

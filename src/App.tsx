@@ -14,6 +14,10 @@ function App() {
       path: "/1",
       element: <Test1 />,
     },
+    {
+      path: "/2",
+      element: <Test2 />,
+    },
   ]);
 
   return(
