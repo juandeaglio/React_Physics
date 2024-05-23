@@ -1,11 +1,11 @@
 // test/AnimatedRect.test.tsx
 import '@testing-library/jest-dom'
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import { StaticCollidable } from '../src/Components/StaticCollidable';
 import { createdMockedGetBoundingClientRect } from '../src/createdMockedGetBoundingClientRect';
-import { RenderableElement } from '../src/Components/Collisions';
+import { RenderableElement } from '../src/RenderableElement';
 interface AppProps {
     children?: ReactNode;
 }
@@ -14,13 +14,14 @@ const rect = new RenderableElement(createdMockedGetBoundingClientRect(-100, 0, 1
 
 function App({children}: AppProps)
 {
-    //const barrier1 = useRef<SVGRectElement>(null);
+    const ref = useRef<SVGSVGElement>(null);
     return(
         <div>
             <StaticCollidable
                 //ref={barrier1}
                 data-testid="Barrier-1"
-                barrierProps={rect} 
+                barrierProps={rect}
+                ref={ref}
             >
             </StaticCollidable>
             

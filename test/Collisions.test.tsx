@@ -6,7 +6,8 @@ import {render} from '@testing-library/react';
 import { AnimatedRect} from '../src/Components/AnimatedRect';
 import { describe, expect, test} from '@jest/globals';
 import { screen } from '@testing-library/dom';
-import { Collisions, RenderableElement } from '../src/Components/Collisions';
+import { Collisions } from '../src/Collisions';
+import { RenderableElement } from '../src/RenderableElement';
 import { createdMockedGetBoundingClientRect } from '../src/createdMockedGetBoundingClientRect';
 import { ViewportBarriers, generateViewport} from '../src/ViewportBarriers';
 
@@ -23,7 +24,7 @@ export class ScreenLimitations
 
 function App({children}: AppProps)
 {
-    const rect1 = useRef<SVGRectElement>(null); // I predict type is going to change, consider abstract
+    const rect1 = useRef<SVGSVGElement>(null); // I predict type is going to change, consider abstract
 
     const screenWidth = new ScreenLimitations().screenWidth;
     const rectWidth = new ScreenLimitations().rectWidth;

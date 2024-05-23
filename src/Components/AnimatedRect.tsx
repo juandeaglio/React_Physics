@@ -13,7 +13,7 @@ export interface GenericProps
   transition?: string;
 }
 export interface AnimatedRectProps {
-  ref?: RefObject<SVGRectElement>;
+  ref?: RefObject<SVGSVGElement>;
   velocityVector?: Vector;
   moreProps?: GenericProps;
 }
@@ -42,7 +42,7 @@ export class Vector
   }
 }
 
-export const AnimatedRect = forwardRef<SVGRectElement, AnimatedRectProps>((props, ref) => {
+export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props, ref) => {
   const [transform, setTransform] = useState<string>("");
   const [transition, setTransition] = useState<string>("");
   
@@ -68,14 +68,15 @@ export const AnimatedRect = forwardRef<SVGRectElement, AnimatedRectProps>((props
   return (
     <svg 
       data-testid={props.moreProps?.['data-testid']} 
-      role="animatable"  
+      role="animatable"
+      ref={ref}
       style={
         {
           transform: transform,
           transition: transition
         }}
     >
-      <Rect ref={ref}/> 
+      <Rect /> 
     </svg>
   );
 });

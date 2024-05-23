@@ -1,5 +1,5 @@
 import { RefObject, useEffect } from "react"
-import { RenderableElement } from "./Components/Collisions"
+import { RenderableElement } from './RenderableElement';
 import { createdMockedGetBoundingClientRect } from './createdMockedGetBoundingClientRect';
 
 export function generateViewport(width: number, height: number): ViewportBarriers

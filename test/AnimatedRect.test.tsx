@@ -12,7 +12,7 @@ interface AppProps {
 
 function App({children}: AppProps)
 {
-    const rect1 = useRef<SVGRectElement>(null);
+    const rect1 = useRef<SVGSVGElement>(null);
     return(
         <div>
             <AnimatedRect ref={rect1} 

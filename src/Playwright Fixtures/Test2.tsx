@@ -1,19 +1,42 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AnimatedRect, Vector } from '../Components/AnimatedRect';
 import { useWindowAsCollisionBarriers, ViewportBarriers } from '../ViewportBarriers';
 import { StaticCollidable } from '../Components/StaticCollidable';
-
+import { Collisions } from '../Collisions';
 
 
 function Test2() 
 {
-  const rect1 = useRef<SVGRectElement>(null);
+  const rect1 = useRef<SVGSVGElement>(null);
   const [initialBox1X, setInitialBox1X] = useState<number>(0);
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
+  const [collisionCount, setCollisionCount] = useState<number>(0);
   const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
   const [barriers, setBarriers] = useState<ViewportBarriers>();
+  const barrierRefs: React.RefObject<SVGSVGElement>[] = function() {
+    const refs = []
+    for (let i = 0; i < 4; i++)
+    {
+      refs.push(React.createRef<SVGSVGElement>());
+    }
+    return refs;
+  }();
+  const collisionDetector = new Collisions({references: [rect1].concat(barrierRefs)});
+
+  useEffect(() =>
+  {
+    function animationLoop()
+    {
+      collisionDetector.checkTrackedForCollisions()
+      setCollisionCount(collisionDetector.totalCollisions);
+      console.log(collisionDetector.totalCollisions);
+      requestAnimationFrame(animationLoop);
+    }
+    requestAnimationFrame(animationLoop) // enables collision checking
+  })
 
   useWindowAsCollisionBarriers(barriers, setBarriers);
+
 
   useEffect(() =>
   {
@@ -22,7 +45,7 @@ function Test2()
 
   useEffect(() =>
   {
-    setVectorState({x: Math.sqrt(100/2), y: Math.sqrt(100/2) });
+    setVectorState({x: 1500, y: 0 });
     function measureRect()
     {
       setTerminalBox1X(rect1.current!.getBoundingClientRect().right);
@@ -36,10 +59,10 @@ function Test2()
     {
       return (
         <>
-          <StaticCollidable barrierProps={barriers.top}></StaticCollidable>
-          <StaticCollidable barrierProps={barriers.bottom}></StaticCollidable>
-          <StaticCollidable barrierProps={barriers.left}></StaticCollidable>
-          <StaticCollidable barrierProps={barriers.right}></StaticCollidable>
+          <StaticCollidable barrierProps={barriers.top} ref={barrierRefs[0]} />
+          <StaticCollidable barrierProps={barriers.bottom} ref={barrierRefs[1]} />
+          <StaticCollidable barrierProps={barriers.left} ref={barrierRefs[2]} />
+          <StaticCollidable barrierProps={barriers.right} ref={barrierRefs[3]} />
         </>
       )
     }
@@ -67,6 +90,9 @@ function Test2()
         </p>
         <p data-testid="result-Box-1-x">
           {terminalBox1X - initialBox1X}
+        </p>
+        <p data-testid="collision-counter">
+          {collisionCount}
         </p>
       </div>
     </>

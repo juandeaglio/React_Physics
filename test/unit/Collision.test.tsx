@@ -1,6 +1,7 @@
 
-import { Collisions, RenderableElement } from '../../src/Components/Collisions';
-import { ManagedArray } from '../../src/Components/Collisions';
+import { Collisions } from '../../src/Collisions';
+import { RenderableElement } from '../../src/RenderableElement';
+import { ManagedArray } from '../../src/Collisions';
 import { createdMockedGetBoundingClientRect } from '../../src/createdMockedGetBoundingClientRect';
 
 export interface MockedRect{
@@ -38,5 +39,19 @@ describe('collisions class', () => {
                 collisions.trackElement(overlappingElement);
                 expect(collisions.isColliding(elem, overlappingElement)).toBe(true);
                 expect(collisions.totalCollisions).toBe(1);
+        });
+
+        test('Find all collissions', () => {
+                const collisions = new Collisions();
+
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100));
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100));
+                const nonOverlapping: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(349,349,1,1));
+
+                collisions.trackElement(elem);
+                collisions.trackElement(overlappingElement);
+                collisions.trackElement(nonOverlapping);
+
+                expect(collisions.checkTrackedForCollisions().size).toBe(2);
         });
 });

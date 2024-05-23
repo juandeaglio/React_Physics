@@ -5,7 +5,7 @@ import { AnimatedRect, Vector } from '../Components/AnimatedRect';
 
 function Test1() 
 {
-  const rect1 = useRef<SVGRectElement>(null);
+  const rect1 = useRef<SVGSVGElement>(null);
   const [initialBox1X, setInitialBox1X] = useState<number>(0);
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
   const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
