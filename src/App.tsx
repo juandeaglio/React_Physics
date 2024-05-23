@@ -12,12 +12,17 @@ import Test2 from './Playwright Fixtures/Test2';
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/1",
-      element: <Test1 />,
-    },
-    {
-      path: "/2",
-      element: <Test2 />,
+      path: "/",
+      children: [
+        {
+          path: "1",
+          element: <Test1 />,
+        },
+        {
+          path: "2",
+          element: <Test2 />,
+        },
+      ],
     },
   ]);
 

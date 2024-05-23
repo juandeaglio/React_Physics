@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('Verify an animation moves 10px upper right', async ({ page }) => {
   await page.goto('http://localhost:3000/1/');
+  // Wait for the 'Box-1' element to be rendered
   const rect = page.getByTestId('Box-1');
   await expect(rect).toBeVisible();
   await page.waitForTimeout(1100);

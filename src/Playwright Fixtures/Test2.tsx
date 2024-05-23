@@ -1,10 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
-import reactLogo from '../assets/react.svg';
-import viteLogo from '../../public/vite.svg';
+import { useState, useRef, useEffect } from 'react';
 import { AnimatedRect, Vector } from '../Components/AnimatedRect';
 import { useWindowAsCollisionBarriers, ViewportBarriers } from '../ViewportBarriers';
 import { StaticCollidable } from '../Components/StaticCollidable';
-
 
 
 
@@ -52,15 +49,6 @@ function Test2()
   return (
     <>
       {boundaryBarriers}
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
         <AnimatedRect 
         ref={rect1} 

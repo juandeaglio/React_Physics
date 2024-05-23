@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import { StaticCollidable } from '../src/Components/StaticCollidable';
-import { createdMockedGetBoundingClientRect } from './unit/Collision.test';
+import { createdMockedGetBoundingClientRect } from '../src/createdMockedGetBoundingClientRect';
 import { RenderableElement } from '../src/Components/Collisions';
 interface AppProps {
     children?: ReactNode;

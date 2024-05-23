@@ -7,7 +7,7 @@ import { AnimatedRect} from '../src/Components/AnimatedRect';
 import { describe, expect, test} from '@jest/globals';
 import { screen } from '@testing-library/dom';
 import { Collisions, RenderableElement } from '../src/Components/Collisions';
-import { createdMockedGetBoundingClientRect } from './unit/Collision.test';
+import { createdMockedGetBoundingClientRect } from '../src/createdMockedGetBoundingClientRect';
 import { ViewportBarriers, generateViewport} from '../src/ViewportBarriers';
 
 interface AppProps {
