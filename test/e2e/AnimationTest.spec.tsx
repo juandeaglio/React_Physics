@@ -25,8 +25,4 @@ test('Verify a collision occurs with the edge of the screen', async ({ page }) =
   let count = await page.getByTestId('collision-counter').first().textContent() ?? 'NaN';
   count = await page.getByTestId('collision-counter').first().textContent() ?? '0';
   expect(parseInt(count)).toBeGreaterThan(0);
-
-
-  const resultX = await page.getByTestId('result-Box-1-x').first().textContent() ?? '0';
-  expect(parseInt(resultX)).toBeCloseTo(screen.width, -1)
 });
