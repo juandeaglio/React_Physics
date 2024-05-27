@@ -25,11 +25,15 @@ function Test2()
 
   useEffect(() =>
   {
+    let set = 0;
     function animationLoop()
     {
       collisionDetector.checkTrackedForCollisions()
-      setCollisionCount(collisionDetector.totalCollisions);
-      console.log(collisionDetector.totalCollisions);
+      if(set != collisionDetector.totalCollisions)
+      {
+        set = collisionDetector.totalCollisions;
+        setCollisionCount(collisionDetector.totalCollisions);
+      }
       requestAnimationFrame(animationLoop);
     }
     requestAnimationFrame(animationLoop) // enables collision checking
@@ -45,7 +49,7 @@ function Test2()
 
   useEffect(() =>
   {
-    setVectorState({x: 1500, y: 0 });
+    setVectorState({x: screen.width, y: 0 });
     function measureRect()
     {
       setTerminalBox1X(rect1.current!.getBoundingClientRect().right);

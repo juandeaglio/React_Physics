@@ -5,14 +5,14 @@ import { ManagedArray } from '../../src/Collisions';
 import { createdMockedGetBoundingClientRect } from '../../src/createdMockedGetBoundingClientRect';
 
 export interface MockedRect{
-        x: number;
-        y: number;
-        top: number;
-        left: number;
-        right: number;
-        bottom: number;
-        width: number;
-        height: number;
+        x: number| undefined;
+        y: number | undefined;
+        top: number | undefined;
+        left: number | undefined ;
+        right: number| undefined ;
+        bottom: number | undefined;
+        width: number | undefined;
+        height: number | undefined;
 }
 
 
@@ -54,4 +54,28 @@ describe('collisions class', () => {
 
                 expect(collisions.checkTrackedForCollisions().size).toBe(2);
         });
+
+        test('Find no collisions', () => {
+                const collisions = new Collisions();
+
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100));
+                const nonOverlapping: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(349,349,1,1));
+
+                collisions.trackElement(elem);
+                collisions.trackElement(nonOverlapping);
+
+                expect(collisions.checkTrackedForCollisions().size).toBe(0);
+        });
+
+        test('Returns 0 collisions from non-existent rectangles', () => {
+                const collisions = new Collisions();
+
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(undefined, undefined, undefined, undefined));
+                const nonOverlapping: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(349,349,1,1));
+
+                collisions.trackElement(elem);
+                collisions.trackElement(nonOverlapping)
+                
+                expect(collisions.checkTrackedForCollisions().size).toBe(0);
+        })
 });

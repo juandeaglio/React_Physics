@@ -31,8 +31,8 @@ export class Collisions{
     isColliding(element: RefObject<SVGSVGElement> | RenderableElement, 
         otherElement : RefObject<SVGSVGElement> | RenderableElement) : boolean
     {
-        const rect1 = element.current.getBoundingClientRect();
-        const rect2 = otherElement.current.getBoundingClientRect();
+        const rect1 = element.current?.getBoundingClientRect();
+        const rect2 = otherElement.current?.getBoundingClientRect();
         if (rect1.x < rect2.x + rect2.width &&
             rect1.x + rect1.width > rect2.x) {
           // Check if the rectangles' y-coordinates overlap
