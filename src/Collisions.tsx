@@ -2,6 +2,8 @@ import { RefObject } from 'react';
 import { RenderableElement } from './RenderableElement';
 import { ElementPair } from './ElementPair';
 import { PairSet } from './PairSet';
+import { Vector } from './Components/AnimatedRect';
+import { FakedDOMRect } from '../test/FakedDOMRect';
 export interface ManagedArray {
     references?: Array<RefObject<SVGSVGElement> | RenderableElement>; // refactorable?
 }
@@ -30,22 +32,43 @@ export class Collisions{
         return this.elements;
     }
 
+    private isHorizontallyOverlapping(rect1: FakedDOMRect, rect2: FakedDOMRect): boolean {
+        if (rect1.x !== undefined && rect1.width !== undefined && rect2.x !== undefined && rect2.width !== undefined)
+        {        
+            return rect1.x < rect2.x + rect2.width && rect1.x + rect1.width > rect2.x;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private isVerticallyOverlapping(rect1: FakedDOMRect, rect2: FakedDOMRect): boolean {
+        if (rect1.y !== undefined && rect1.height !== undefined && rect2.y !== undefined && rect2.height !== undefined )
+        {        
+            return rect1.y < rect2.y + rect2.height && rect1.y + rect1.height > rect2.y;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     isColliding(element: RefObject<SVGSVGElement> | RenderableElement, 
-        otherElement : RefObject<SVGSVGElement> | RenderableElement) : boolean
-    {
+                otherElement: RefObject<SVGSVGElement> | RenderableElement): boolean {
         const rect1 = element.current?.getBoundingClientRect();
         const rect2 = otherElement.current?.getBoundingClientRect();
-        if (rect1 && rect2 && rect1.x < rect2.x + rect2.width &&
-            rect1.x + rect1.width > rect2.x) {
-          // Check if the rectangles' y-coordinates overlap
-          if (rect1.y < rect2.y + rect2.height &&
-              rect1.y + rect1.height > rect2.y) {
-            // The rectangles overlap
-            this.totalCollisions += 1;
-            return true;
-          }
+
+        if (rect1 && rect2) {
+            const horizontalOverlap = this.isHorizontallyOverlapping(rect1, rect2);
+            const verticalOverlap = this.isVerticallyOverlapping(rect1, rect2);
+            
+            if (horizontalOverlap && verticalOverlap) {
+                this.totalCollisions += 1;
+                return true;
+            }
         }
-        return false
+        return false;
     }
     
     checkTrackedForCollisions() : PairSet
@@ -71,5 +94,13 @@ export class Collisions{
             }
         }
         return colliding;
+    }
+    calculateVectorsWithCollisions(collisions: Array<ElementPair>): Array<Vector>
+    {
+        const vectors: Array<Vector> = [];
+        collisions.forEach(pair => {
+            pair.first.current!.style
+        });
+        return vectors;
     }
 }

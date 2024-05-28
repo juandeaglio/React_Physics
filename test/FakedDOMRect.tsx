@@ -1,12 +1,12 @@
 export class FakedDOMRect {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
+    x: number | undefined;
+    y: number | undefined;
+    width: number | undefined;
+    height: number | undefined;
+    left: number | undefined;
+    right: number | undefined;
+    top: number | undefined;
+    bottom: number | undefined;
 
     constructor(x: number, y: number, width: number, height: number) {
         this.x = x;

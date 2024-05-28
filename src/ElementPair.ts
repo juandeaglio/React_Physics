@@ -5,7 +5,7 @@ import { RenderableElement } from "./RenderableElement";
 export class ElementPair {
     first;
     second;
-    constructor(first: RefObject<SVGSVGElement | RenderableElement>, second: RefObject<SVGSVGElement | RenderableElement>) {
+    constructor(first: RefObject<SVGSVGElement>| RenderableElement, second: RefObject<SVGSVGElement> | RenderableElement) {
         this.first = first;
         this.second = second;
     }

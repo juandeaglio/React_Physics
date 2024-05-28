@@ -12,13 +12,13 @@ export const StaticCollidable = forwardRef<SVGSVGElement, StaticProps>((testProp
         ref={ref}
         style={{
             position: "absolute", 
-            left: testProps.barrierProps?.current.getBoundingClientRect().x,
-            top: testProps.barrierProps?.current.getBoundingClientRect().y,
+            left: testProps.barrierProps?.current?.getBoundingClientRect().x,
+            top: testProps.barrierProps?.current?.getBoundingClientRect().y,
         }}
-        x={testProps.barrierProps?.current.getBoundingClientRect().x} 
-        y={testProps.barrierProps?.current.getBoundingClientRect().y} 
-        width={testProps.barrierProps?.current.getBoundingClientRect().width} 
-        height={testProps.barrierProps?.current.getBoundingClientRect().height} 
+        x={testProps.barrierProps?.current?.getBoundingClientRect().x} 
+        y={testProps.barrierProps?.current?.getBoundingClientRect().y} 
+        width={testProps.barrierProps?.current?.getBoundingClientRect().width} 
+        height={testProps.barrierProps?.current?.getBoundingClientRect().height} 
         role="impervious" 
         data-testid={testProps["data-testid"]}>
             <rect>

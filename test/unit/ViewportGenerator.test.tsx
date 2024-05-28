@@ -16,7 +16,7 @@ describe('generate viewports based on screen size', () => {
     })
 
     test('Generate top barrier on a screen', () => {
-        const topBarrier: FakedDOMRect = viewPortBarriers.top.current.getBoundingClientRect();
+        const topBarrier: FakedDOMRect = viewPortBarriers.top.current!.getBoundingClientRect();
         expect(topBarrier.top).toBe(-barrierWidthHeight);
         expect(topBarrier.bottom).toBe(0);
         expect(topBarrier.left).toBe(0);
@@ -24,7 +24,7 @@ describe('generate viewports based on screen size', () => {
     })
 
     test('Generate right barrier on a screen', () => {
-        const rightBarrier: FakedDOMRect = viewPortBarriers.right.current.getBoundingClientRect();
+        const rightBarrier: FakedDOMRect = viewPortBarriers.right.current!.getBoundingClientRect();
         expect(rightBarrier.top).toBe(0);
         expect(rightBarrier.bottom).toBe(screenHeight);
         expect(rightBarrier.left).toBe(screenWidth);
@@ -32,7 +32,7 @@ describe('generate viewports based on screen size', () => {
     })
 
     test('Generate bottom barrier on a screen', () => {
-        const bottomBarrier: FakedDOMRect = viewPortBarriers.bottom.current.getBoundingClientRect();
+        const bottomBarrier: FakedDOMRect = viewPortBarriers.bottom.current!.getBoundingClientRect();
         expect(bottomBarrier.top).toBe(screenHeight);
         expect(bottomBarrier.bottom).toBe(screenHeight+barrierWidthHeight);
         expect(bottomBarrier.left).toBe(0);
@@ -40,7 +40,7 @@ describe('generate viewports based on screen size', () => {
     })
 
     test('Generate left barrier on a screen', () => {
-        const leftBarrier: FakedDOMRect = viewPortBarriers.left.current.getBoundingClientRect();
+        const leftBarrier: FakedDOMRect = viewPortBarriers.left.current!.getBoundingClientRect();
         expect(leftBarrier.top).toBe(0);
         expect(leftBarrier.bottom).toBe(screenHeight);
         expect(leftBarrier.left).toBe(-barrierWidthHeight);

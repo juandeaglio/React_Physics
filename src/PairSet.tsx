@@ -9,7 +9,7 @@ export class PairSet {
         this.pairs = new Set();
     }
 
-    add(first: RefObject<SVGSVGElement | RenderableElement>, second: RefObject<SVGSVGElement | RenderableElement>) {
+    add(first: RefObject<SVGSVGElement> | RenderableElement, second: RefObject<SVGSVGElement> | RenderableElement) {
         const pair = new ElementPair(first, second);
         if (!this.has(pair)) {
             this.pairs.add(pair);

@@ -3,6 +3,7 @@ import { AnimatedRect, Vector } from '../../src/Components/AnimatedRect';
 import { generateViewport, ViewportBarriers } from '../../src/ViewportBarriers';
 import { StaticCollidable } from '../../src/Components/StaticCollidable';
 import { Collisions } from '../../src/Collisions';
+import { PairSet } from '../../src/PairSet';
 
 
 function Test2() 
@@ -11,6 +12,7 @@ function Test2()
   const [initialBox1X, setInitialBox1X] = useState<number>(0);
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
   const [collisionCount, setCollisionCount] = useState<number>(0);
+  const [collidedElements, setCollidedElements] = useState<PairSet>();
   const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
   const [barriers, setBarriers] = useState<ViewportBarriers>();
   const [barrierX, setBarrierX] = useState<number>(0);
@@ -37,17 +39,24 @@ function Test2()
       }
       if(!stopMeasuring)
       {
-        collisionDetector.checkTrackedForCollisions()
+        const collided = collisionDetector.checkTrackedForCollisions()
         if(set != collisionDetector.totalCollisions)
         {
           set = collisionDetector.totalCollisions;
           setCollisionCount(collisionDetector.totalCollisions);
+          setCollidedElements(collided);
         }
         requestAnimationFrame(animationLoop);
       }
     }
     requestAnimationFrame(animationLoop) // enables collision checking
   })
+
+  useEffect(() =>
+  {
+    const newVectors: Array<Vector> = collisionDetector.calculateVectorsWithCollisions(collidedElements);
+    setVectorState(newVectors[0]);
+  }, [collidedElements])
 
   useEffect(() =>
   {

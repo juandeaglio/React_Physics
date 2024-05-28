@@ -15,8 +15,8 @@ describe('collisions class', () => {
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100));
                 const collisions = new Collisions();
                 collisions.trackElement(elem);
-                expect(collisions.__getElements()[0].current.getBoundingClientRect().width).toBe(100);
-                expect(collisions.__getElements()[0].current.getBoundingClientRect().height).toBe(100);
+                expect(collisions.__getElements()[0].current!.getBoundingClientRect().width).toBe(100);
+                expect(collisions.__getElements()[0].current!.getBoundingClientRect().height).toBe(100);
         });
 
         test('Detects a single collision', () => {
@@ -27,6 +27,7 @@ describe('collisions class', () => {
 
                 collisions.trackElement(elem);
                 collisions.trackElement(overlappingElement);
+                
                 expect(collisions.isColliding(elem, overlappingElement)).toBe(true);
                 expect(collisions.totalCollisions).toBe(1);
         });
@@ -70,5 +71,13 @@ describe('collisions class', () => {
                 collisions.trackElement(nonOverlapping)
                 
                 expect(collisions.checkTrackedForCollisions().size).toBe(0);
+        })
+
+        test('Equal and opposite reaction in a force of collision', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${0}px)`});
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-10}px, ${0}px)`});
+                const newVectors = collisions.calculateVectorsWithCollisions([new ElementPair(elem, overlappingElement)]);
+                expect(newVectors[0]).toBe
         })
 });

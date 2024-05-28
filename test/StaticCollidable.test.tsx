@@ -26,16 +26,16 @@ function App({children}: AppProps)
             </StaticCollidable>
             
             <p>
-                x={rect.current.getBoundingClientRect().x}
+                x={rect.current?.getBoundingClientRect().x}
             </p>
             <p>
-                y={rect.current.getBoundingClientRect().y}
+                y={rect.current?.getBoundingClientRect().y}
             </p>
             <p>
-                width={rect.current.getBoundingClientRect().width}
+                width={rect.current?.getBoundingClientRect().width}
             </p>
             <p>
-                height={rect.current.getBoundingClientRect().height}
+                height={rect.current?.getBoundingClientRect().height}
             </p>
             {children}
         </div>
@@ -80,16 +80,16 @@ describe('animatedrect component', () => {
         
         expect(element).toBeVisible();
 
-        const x = screen.getByText(`x=${rect.current.getBoundingClientRect().x}`);
+        const x = screen.getByText(`x=${rect.current!.getBoundingClientRect().x}`);
         expect(x).toBeVisible();
         
-        const y = screen.getByText(`y=${rect.current.getBoundingClientRect().y}`);
+        const y = screen.getByText(`y=${rect.current!.getBoundingClientRect().y}`);
         expect(y).toBeVisible();
 
-        const width = screen.getByText(`width=${rect.current.getBoundingClientRect().width}`);
+        const width = screen.getByText(`width=${rect.current!.getBoundingClientRect().width}`);
         expect(width).toBeVisible();
 
-        const height = screen.getByText(`height=${rect.current.getBoundingClientRect().height}`);
+        const height = screen.getByText(`height=${rect.current!.getBoundingClientRect().height}`);
         expect(height).toBeVisible();
     })
 });
