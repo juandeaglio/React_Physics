@@ -1,4 +1,4 @@
-import { MockedRect } from "../test/unit/Collision.test";
+import { MockedRect } from '../test/unit/MockedRect';
 
 
 export class RenderableElement {

@@ -1,9 +1,8 @@
 // test/Collisions.test.tsx
 import '@testing-library/jest-dom'
-import { FakedDOMRect } from '../AnimatedRect.test';
+import { FakedDOMRect } from '../FakedDOMRect';
 import { generateViewport, ViewportBarriers } from '../../src/ViewportBarriers';
-import { ScreenLimitations } from '../Collisions.test';
-import { describe, expect, test} from '@jest/globals';
+import { ScreenLimitations } from '../ScreenLimitations';
 
 
 describe('generate viewports based on screen size', () => {

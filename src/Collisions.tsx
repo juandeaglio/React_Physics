@@ -60,9 +60,12 @@ export class Collisions{
                 if (element != elements[j])
                 {
                     const other = elements[j];
-                    if (!colliding.has(new ElementPair(element, other)) && this.isColliding(element, other))
+                    if(this.isColliding(element, other))
                     {
-                        colliding.add(element, other);
+                        if (!colliding.has(new ElementPair(element, other)))
+                        {
+                            colliding.add(element, other);
+                        }
                     }
                 }
             }

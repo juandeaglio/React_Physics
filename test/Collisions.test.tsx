@@ -2,24 +2,17 @@
 import '@testing-library/jest-dom'
 
 import { ReactNode, useRef } from 'react';
-import {render} from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { AnimatedRect} from '../src/Components/AnimatedRect';
-import { describe, expect, test} from '@jest/globals';
 import { screen } from '@testing-library/dom';
 import { Collisions } from '../src/Collisions';
 import { RenderableElement } from '../src/RenderableElement';
 import { createdMockedGetBoundingClientRect } from '../src/createdMockedGetBoundingClientRect';
 import { ViewportBarriers, generateViewport} from '../src/ViewportBarriers';
+import { ScreenLimitations } from './ScreenLimitations';
 
 interface AppProps {
     children?: ReactNode;
-}
-
-export class ScreenLimitations
-{
-    screenWidth = 1280;
-    screenHeight = 720;
-    rectWidth = 100;
 }
 
 function App({children}: AppProps)

@@ -5,23 +5,12 @@ import { ManagedArray } from '../../src/Collisions';
 import { createdMockedGetBoundingClientRect } from '../../src/createdMockedGetBoundingClientRect';
 import { ElementPair } from '../../src/ElementPair';
 
-export interface MockedRect{
-        x: number| undefined;
-        y: number | undefined;
-        top: number | undefined;
-        left: number | undefined ;
-        right: number| undefined ;
-        bottom: number | undefined;
-        width: number | undefined;
-        height: number | undefined;
-}
-
-
 describe('collisions class', () => {
         test('Collisions takes in array of elements', () => {
                 const empty: ManagedArray = {references: []};
                 expect(new Collisions(empty)).toBeTruthy();
         });
+
         test('Collisions contains a single renderableElement', () => {
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100));
                 const collisions = new Collisions();
