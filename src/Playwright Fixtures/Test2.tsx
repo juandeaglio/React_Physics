@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { AnimatedRect, Vector } from '../Components/AnimatedRect';
-import { useWindowAsCollisionBarriers, ViewportBarriers } from '../ViewportBarriers';
+import { generateViewport, ViewportBarriers } from '../ViewportBarriers';
 import { StaticCollidable } from '../Components/StaticCollidable';
 import { Collisions } from '../Collisions';
 
@@ -13,6 +13,8 @@ function Test2()
   const [collisionCount, setCollisionCount] = useState<number>(0);
   const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
   const [barriers, setBarriers] = useState<ViewportBarriers>();
+  const [barrierX, setBarrierX] = useState<number>(0);
+  const [stopMeasuring, setStop] = useState<boolean>(false);
   const barrierRefs: React.RefObject<SVGSVGElement>[] = function() {
     const refs = []
     for (let i = 0; i < 4; i++)
@@ -28,54 +30,57 @@ function Test2()
     let set = 0;
     function animationLoop()
     {
-      collisionDetector.checkTrackedForCollisions()
-      if(set != collisionDetector.totalCollisions)
+      
+      if(barrierRefs[3].current && barrierRefs[3].current.getBoundingClientRect())
       {
-        set = collisionDetector.totalCollisions;
-        setCollisionCount(collisionDetector.totalCollisions);
+        setBarrierX(barrierRefs[3].current.getBoundingClientRect().left);
       }
-      requestAnimationFrame(animationLoop);
+      if(!stopMeasuring)
+      {
+        collisionDetector.checkTrackedForCollisions()
+        if(set != collisionDetector.totalCollisions)
+        {
+          set = collisionDetector.totalCollisions;
+          setCollisionCount(collisionDetector.totalCollisions);
+        }
+        requestAnimationFrame(animationLoop);
+      }
     }
     requestAnimationFrame(animationLoop) // enables collision checking
   })
 
-  useWindowAsCollisionBarriers(barriers, setBarriers);
-
-
   useEffect(() =>
   {
     setInitialBox1X(rect1.current!.getBoundingClientRect().right);
-  }, [rect1])
 
-  useEffect(() =>
-  {
-    setVectorState({x: screen.width, y: 0 });
+    function handleResize()
+    {
+      setBarriers(generateViewport(window.innerWidth, window.innerHeight));
+    }
+    
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    setVectorState({x: screen.width*2, y: 0 });
     function measureRect()
     {
       setTerminalBox1X(rect1.current!.getBoundingClientRect().right);
+      setStop(true);
     }
     setTimeout(measureRect, 1000);
-  }, [initialBox1X])
-  
-  function Barriers(barriers: ViewportBarriers | undefined)
+
+  }, [])
+  useEffect(() =>
   {
-    if (barriers)
-    {
-      return (
-        <>
-          <StaticCollidable barrierProps={barriers.top} ref={barrierRefs[0]} />
-          <StaticCollidable barrierProps={barriers.bottom} ref={barrierRefs[1]} />
-          <StaticCollidable barrierProps={barriers.left} ref={barrierRefs[2]} />
-          <StaticCollidable barrierProps={barriers.right} ref={barrierRefs[3]} />
-        </>
-      )
-    }
-  }
-  
-  const boundaryBarriers = Barriers(barriers);
+    console.log("Resizing with dimensions: ", window.innerHeight, window.innerWidth )
+    console.log(barrierRefs[3].current!.getBoundingClientRect().left);
+  }, [barriers, barrierRefs])
   return (
     <>
-      {boundaryBarriers}
+      <StaticCollidable barrierProps={barriers?.top} ref={barrierRefs[0]} />
+      <StaticCollidable barrierProps={barriers?.bottom} ref={barrierRefs[1]} />
+      <StaticCollidable barrierProps={barriers?.left} ref={barrierRefs[2]} />
+      <StaticCollidable barrierProps={barriers?.right} ref={barrierRefs[3]} />
       <div className="card">
         <AnimatedRect 
         ref={rect1} 
@@ -97,6 +102,9 @@ function Test2()
         </p>
         <p data-testid="collision-counter">
           {collisionCount}
+        </p>
+        <p data-testid="right-Barrier">
+          {barrierX}
         </p>
       </div>
     </>

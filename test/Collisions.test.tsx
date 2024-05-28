@@ -17,8 +17,8 @@ interface AppProps {
 
 export class ScreenLimitations
 {
-    screenWidth = 1000;
-    screenHeight = 1000;
+    screenWidth = 1280;
+    screenHeight = 720;
     rectWidth = 100;
 }
 

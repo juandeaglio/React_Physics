@@ -42,6 +42,22 @@ function App({children}: AppProps)
     );
 }
 
+function UndefinedBarrier()
+{
+    const ref = useRef<SVGSVGElement>(null);
+    return(
+        <div>
+            <StaticCollidable
+                //ref={barrier1}
+                data-testid="Barrier-1"
+                barrierProps={undefined}
+                ref={ref}
+            >
+            </StaticCollidable>
+        </div>
+    );
+}
+
 describe('animatedrect component', () => {
     test('shows a static barrier', () => {
         const testMessage = 'Test Message'
@@ -49,6 +65,13 @@ describe('animatedrect component', () => {
 
         expect(screen.queryAllByRole("impervious")[0]).toBeVisible();
     })
+
+    test('create a barrier with no props', () => {
+        render(<UndefinedBarrier></UndefinedBarrier>)
+
+        expect(screen.queryAllByRole("impervious")[0]).toBeVisible();
+    })
+
 
     test('static barrier is positionable', () => {
         render(<App></App>); 

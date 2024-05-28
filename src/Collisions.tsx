@@ -1,5 +1,7 @@
 import { RefObject } from 'react';
 import { RenderableElement } from './RenderableElement';
+import { ElementPair } from './ElementPair';
+import { PairSet } from './PairSet';
 export interface ManagedArray {
     references?: Array<RefObject<SVGSVGElement> | RenderableElement>; // refactorable?
 }
@@ -33,7 +35,7 @@ export class Collisions{
     {
         const rect1 = element.current?.getBoundingClientRect();
         const rect2 = otherElement.current?.getBoundingClientRect();
-        if (rect1.x < rect2.x + rect2.width &&
+        if (rect1 && rect2 && rect1.x < rect2.x + rect2.width &&
             rect1.x + rect1.width > rect2.x) {
           // Check if the rectangles' y-coordinates overlap
           if (rect1.y < rect2.y + rect2.height &&
@@ -45,10 +47,10 @@ export class Collisions{
         }
         return false
     }
-
-    checkTrackedForCollisions() : Set<RefObject<SVGSVGElement> | RenderableElement>
+    
+    checkTrackedForCollisions() : PairSet
     {
-        const colliding = new Set<RefObject<SVGSVGElement> | RenderableElement>([]);
+        const colliding = new PairSet();
         const elements = this.__getElements();
         for(let i = 0; i < elements.length; i++)
         {
@@ -58,9 +60,9 @@ export class Collisions{
                 if (element != elements[j])
                 {
                     const other = elements[j];
-                    if (!colliding.has(other) && this.isColliding(element, other))
+                    if (!colliding.has(new ElementPair(element, other)) && this.isColliding(element, other))
                     {
-                        colliding.add(other);
+                        colliding.add(element, other);
                     }
                 }
             }

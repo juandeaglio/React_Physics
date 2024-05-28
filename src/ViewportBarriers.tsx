@@ -31,10 +31,8 @@ export function useWindowAsCollisionBarriers(barriers: ViewportBarriers | undefi
         {
             setBarriers(generateViewport(window.innerHeight, window.innerWidth));
         }
-        // Add event listener
-        window.addEventListener("resize", handleResize);
-        // Call handler right away so state gets updated with initial window size
         handleResize();
+        window.addEventListener("resize", handleResize);
     })
     return barriers
 }

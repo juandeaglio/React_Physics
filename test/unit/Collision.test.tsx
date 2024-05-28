@@ -3,6 +3,7 @@ import { Collisions } from '../../src/Collisions';
 import { RenderableElement } from '../../src/RenderableElement';
 import { ManagedArray } from '../../src/Collisions';
 import { createdMockedGetBoundingClientRect } from '../../src/createdMockedGetBoundingClientRect';
+import { ElementPair } from '../../src/ElementPair';
 
 export interface MockedRect{
         x: number| undefined;
@@ -41,7 +42,7 @@ describe('collisions class', () => {
                 expect(collisions.totalCollisions).toBe(1);
         });
 
-        test('Find all collissions', () => {
+        test('Find all collisions', () => {
                 const collisions = new Collisions();
 
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100));
@@ -52,7 +53,10 @@ describe('collisions class', () => {
                 collisions.trackElement(overlappingElement);
                 collisions.trackElement(nonOverlapping);
 
-                expect(collisions.checkTrackedForCollisions().size).toBe(2);
+                const collided = collisions.checkTrackedForCollisions();
+                expect(collided.size).toBe(1);
+                expect(collided.getPairs()[0].equals(new ElementPair(elem, overlappingElement))).toBe(true);
+
         });
 
         test('Find no collisions', () => {
