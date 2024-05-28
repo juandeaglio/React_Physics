@@ -2,8 +2,9 @@ import { RefObject } from 'react';
 import { RenderableElement } from './RenderableElement';
 import { ElementPair } from './ElementPair';
 import { PairSet } from './PairSet';
-import { Vector } from './Components/AnimatedRect';
+import { Vector } from './Components/Vector';
 import { FakedDOMRect } from '../test/FakedDOMRect';
+import { parseTransform } from '../test/ParseTransform';
 export interface ManagedArray {
     references?: Array<RefObject<SVGSVGElement> | RenderableElement>; // refactorable?
 }
@@ -95,12 +96,24 @@ export class Collisions{
         }
         return colliding;
     }
-    calculateVectorsWithCollisions(collisions: Array<ElementPair>): Array<Vector>
+    calculateVectorsWithCollisions(collisions: Array<ElementPair>): Array<Array<Vector>>
     {
-        const vectors: Array<Vector> = [];
-        collisions.forEach(pair => {
-            pair.first.current!.style
-        });
+        const vectors: Array<Array<Vector>> = [];
+        for(let i = 0; i < collisions.length; i++)
+        {
+            const pair = collisions[i];
+            const transformText = pair.first.current!.style.transform;
+            const secondTransform = pair.second.current!.style.transform;
+            if(transformText != undefined && secondTransform != undefined)
+            {
+                const firstVector = parseTransform(transformText);
+                const secondVector = parseTransform(secondTransform);
+                const firstComponent = firstVector[0] - secondVector[0];
+                const secondComponent = firstVector[1] - secondVector[1];
+                vectors.push([new Vector(firstComponent, secondComponent), new Vector(-firstComponent, - secondComponent)]);
+            }
+        }
+        
         return vectors;
     }
 }

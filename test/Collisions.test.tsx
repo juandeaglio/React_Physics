@@ -10,6 +10,8 @@ import { RenderableElement } from '../src/RenderableElement';
 import { createdMockedGetBoundingClientRect } from '../src/createdMockedGetBoundingClientRect';
 import { ViewportBarriers, generateViewport} from '../src/ViewportBarriers';
 import { ScreenLimitations } from './ScreenLimitations';
+import { parseTransform } from './ParseTransform';
+import { Vector } from '../src/Components/Vector';
 
 interface AppProps {
     children?: ReactNode;
@@ -24,23 +26,11 @@ function App({children}: AppProps)
     return(
         <div>
             <div>
-                <AnimatedRect moreProps={{"data-testid": "Box-1"}} ref={rect1} velocityVector={{x: screenWidth - rectWidth + 1, y: 0}}/>
+                <AnimatedRect moreProps={{"data-testid": "Box-1"}} ref={rect1} velocityVector={new Vector(screenWidth - rectWidth + 1,0)}/>
                 {children}
             </div>
         </div>
     );
-}
-
-function parseTransform(transform: string): number[]
-{
-    const valuesRegex = "\\(.*\\)";
-    const splitValues: string[] = transform.match(valuesRegex)![0].split(',');
-    const digitsOnlyX: string = splitValues[0].match(/\d+/)![0];
-    const digitsOnlyY: string = splitValues[1].match(/\d+/)![0];
-    
-    
-    const elements = [parseInt(digitsOnlyX), parseInt(digitsOnlyY)]
-    return elements
 }
 
 describe('collisionCalculator class', () => {

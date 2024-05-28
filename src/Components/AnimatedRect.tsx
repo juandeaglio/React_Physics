@@ -1,5 +1,6 @@
 import { useState, useEffect, RefObject, forwardRef } from 'react';
 import styled from 'styled-components';
+import { Vector } from './Vector';
 
 export const Rect = styled.rect`
   fill: red;
@@ -16,30 +17,6 @@ export interface AnimatedRectProps {
   ref?: RefObject<SVGSVGElement>;
   velocityVector?: Vector;
   moreProps?: GenericProps;
-}
-
-export class Vector
-{
-  x: number;
-  y: number;
-  constructor(x?: number, y?:number)
-  {
-    if(x){
-      this.x = x;
-    }
-    else
-    {
-      this.x = 0;
-    }
-    
-    if(y){
-      this.y = y;
-    }
-    else
-    {
-      this.y = 0;
-    }
-  }
 }
 
 export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props, ref) => {

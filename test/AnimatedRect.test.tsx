@@ -6,6 +6,7 @@ import { screen } from '@testing-library/dom';
 import { AnimatedRect } from '../src/Components/AnimatedRect';
 import {describe, test} from '@jest/globals';
 import { FakedDOMRect } from './FakedDOMRect';
+import { Vector } from '../src/Components/Vector';
 
 interface AppProps {
     children?: ReactNode;
@@ -17,7 +18,7 @@ function App({children}: AppProps)
     return(
         <div>
             <AnimatedRect ref={rect1} 
-                velocityVector={{x: Math.sqrt(100/2), y: Math.sqrt(100/2) }} 
+                velocityVector={new Vector(Math.sqrt(100/2), Math.sqrt(100/2))} 
                 moreProps={{
                     "data-testid": "Box-1", 
                     transition: "transform 1s linear 0s"

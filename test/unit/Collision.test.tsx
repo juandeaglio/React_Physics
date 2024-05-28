@@ -4,6 +4,7 @@ import { RenderableElement } from '../../src/RenderableElement';
 import { ManagedArray } from '../../src/Collisions';
 import { createdMockedGetBoundingClientRect } from '../../src/createdMockedGetBoundingClientRect';
 import { ElementPair } from '../../src/ElementPair';
+import { Vector } from '../../src/Components/Vector';
 
 describe('collisions class', () => {
         test('Collisions takes in array of elements', () => {
@@ -73,11 +74,22 @@ describe('collisions class', () => {
                 expect(collisions.checkTrackedForCollisions().size).toBe(0);
         })
 
-        test('Equal and opposite reaction in a force of collision', () => {
+        test('Two equal forces collision', () => {
                 const collisions = new Collisions();
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${0}px)`});
                 const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-10}px, ${0}px)`});
                 const newVectors = collisions.calculateVectorsWithCollisions([new ElementPair(elem, overlappingElement)]);
-                expect(newVectors[0]).toBe
+                expect(newVectors[0][0]).toEqual(new Vector(0, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(0, 0));
+        })
+
+        
+        test('Two unequal forces collision', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${20}px, ${0}px)`});
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-10}px, ${0}px)`});
+                const newVectors = collisions.calculateVectorsWithCollisions([new ElementPair(elem, overlappingElement)]);
+                expect(newVectors[0][0]).toEqual(new Vector(10, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(-10, 0));
         })
 });

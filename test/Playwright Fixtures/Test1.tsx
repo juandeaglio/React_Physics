@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import reactLogo from '../../src/assets/react.svg';
 import viteLogo from '../../public/vite.svg';
-import { AnimatedRect, Vector } from '../../src/Components/AnimatedRect';
+import { AnimatedRect } from '../../src/Components/AnimatedRect';
+import { Vector } from '../../src/Components/Vector';
 
 function Test1() 
 {

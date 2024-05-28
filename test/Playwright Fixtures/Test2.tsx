@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { AnimatedRect, Vector } from '../../src/Components/AnimatedRect';
+import { AnimatedRect } from '../../src/Components/AnimatedRect';
+import { Vector } from '../../src/Components/Vector';
 import { generateViewport, ViewportBarriers } from '../../src/ViewportBarriers';
 import { StaticCollidable } from '../../src/Components/StaticCollidable';
 import { Collisions } from '../../src/Collisions';
