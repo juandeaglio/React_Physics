@@ -45,6 +45,8 @@ export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props,
   return (
     <svg 
       data-testid={props.moreProps?.['data-testid']} 
+      width="100px"
+      height="100px"
       role="animatable"
       ref={ref}
       style={

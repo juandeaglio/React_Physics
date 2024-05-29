@@ -1,5 +1,9 @@
 
-export function parseTransform(transform: string): number[] {
+export function parseTransform(transform: string | undefined): number[] {
+    if (transform === undefined)
+    {
+        return [NaN,NaN];
+    }
     const valuesRegex = "\\(.*\\)";
     const splitValues: string[] = transform.match(valuesRegex)![0].split(',');
     const digitsOnlyX: string = splitValues[0].match(/(\\-*\d+)|(\d+)/)![0];

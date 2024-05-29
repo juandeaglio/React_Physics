@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { AnimatedRect } from '../../src/Components/AnimatedRect';
 import { Vector } from '../../src/Components/Vector';
 import { generateViewport, ViewportBarriers } from '../../src/ViewportBarriers';
@@ -14,7 +14,7 @@ function Test2()
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
   const [collisionCount, setCollisionCount] = useState<number>(0);
   const [collidedElements, setCollidedElements] = useState<PairSet>();
-  const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
+  const [vectorState, setVectorState] = useState<Vector>(new Vector(0,0));
   const [barriers, setBarriers] = useState<ViewportBarriers>();
   const [barrierX, setBarrierX] = useState<number>(0);
   const [stopMeasuring, setStop] = useState<boolean>(false);
@@ -26,7 +26,10 @@ function Test2()
     }
     return refs;
   }();
-  const collisionDetector = new Collisions({references: [rect1].concat(barrierRefs)});
+
+  const collisionDetector = useMemo(() => {
+    return new Collisions({references: [rect1].concat(barrierRefs)});
+  }, [barrierRefs])
 
   useEffect(() =>
   {
@@ -34,7 +37,7 @@ function Test2()
     function animationLoop()
     {
       
-      if(barrierRefs[3].current && barrierRefs[3].current.getBoundingClientRect())
+      if(barrierRefs[3] && barrierRefs[3].current && barrierRefs[3].current.getBoundingClientRect())
       {
         setBarrierX(barrierRefs[3].current.getBoundingClientRect().left);
       }
@@ -49,19 +52,26 @@ function Test2()
         }
         requestAnimationFrame(animationLoop);
       }
+      else
+      {
+        setVectorState(new Vector(rect1.current!.getBoundingClientRect().left, 0)); 
+      }
     }
     requestAnimationFrame(animationLoop) // enables collision checking
   })
 
   useEffect(() =>
   {
-    const newVectors: Array<Vector> = collisionDetector.calculateVectorsWithCollisions(collidedElements);
-    setVectorState(newVectors[0]);
+    if(collidedElements !== undefined && collidedElements.size > 0)
+    {
+      const newVectors: Array<Array<Vector>> = collisionDetector.calculateVectorsWithCollisions(collidedElements);
+      setVectorState(newVectors[0][0]);
+    }
   }, [collidedElements])
 
   useEffect(() =>
   {
-    setInitialBox1X(rect1.current!.getBoundingClientRect().right);
+    setInitialBox1X(rect1.current!.getBoundingClientRect().left);
 
     function handleResize()
     {
@@ -71,52 +81,48 @@ function Test2()
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    setVectorState({x: screen.width*2, y: 0 });
+    setVectorState(new Vector(window.innerWidth, 0));
     function measureRect()
     {
-      setTerminalBox1X(rect1.current!.getBoundingClientRect().right);
+      if(rect1.current)
+      {
+        setTerminalBox1X(rect1.current.getBoundingClientRect().left);
+      }
       setStop(true);
     }
     setTimeout(measureRect, 1000);
-
   }, [])
-  useEffect(() =>
-  {
-    console.log("Resizing with dimensions: ", window.innerHeight, window.innerWidth )
-    console.log(barrierRefs[3].current!.getBoundingClientRect().left);
-  }, [barriers, barrierRefs])
+
   return (
     <>
       <StaticCollidable barrierProps={barriers?.top} ref={barrierRefs[0]} />
       <StaticCollidable barrierProps={barriers?.bottom} ref={barrierRefs[1]} />
       <StaticCollidable barrierProps={barriers?.left} ref={barrierRefs[2]} />
       <StaticCollidable barrierProps={barriers?.right} ref={barrierRefs[3]} />
-      <div className="card">
-        <AnimatedRect 
-        ref={rect1} 
-        velocityVector={vectorState} 
-        moreProps={
-          {
-            "data-testid": "Box-1",
-          }
+      <AnimatedRect 
+      ref={rect1} 
+      velocityVector={vectorState} 
+      moreProps={
+        {
+          "data-testid": "Box-1",
         }
-        />
-        <p data-testid="initial-Box-1-x">
-          {initialBox1X}
-        </p>
-        <p data-testid="terminal-Box-1-x">
-          {terminalBox1X}
-        </p>
-        <p data-testid="result-Box-1-x">
-          {terminalBox1X - initialBox1X}
-        </p>
-        <p data-testid="collision-counter">
-          {collisionCount}
-        </p>
-        <p data-testid="right-Barrier">
-          {barrierX}
-        </p>
-      </div>
+      }
+      />
+      <p data-testid="initial-Box-1-x">
+        {initialBox1X}
+      </p>
+      <p data-testid="terminal-Box-1-x">
+        {terminalBox1X}
+      </p>
+      <p data-testid="result-Box-1-x">
+        {terminalBox1X - initialBox1X}
+      </p>
+      <p data-testid="collision-counter">
+        {collisionCount}
+      </p>
+      <p data-testid="right-Barrier">
+        {barrierX}
+      </p>
     </>
   )
 }

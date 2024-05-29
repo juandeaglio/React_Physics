@@ -3,13 +3,12 @@ import reactLogo from '../../src/assets/react.svg';
 import viteLogo from '../../public/vite.svg';
 import { AnimatedRect } from '../../src/Components/AnimatedRect';
 import { Vector } from '../../src/Components/Vector';
-
 function Test1() 
 {
   const rect1 = useRef<SVGSVGElement>(null);
   const [initialBox1X, setInitialBox1X] = useState<number>(0);
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
-  const [vectorState, setVectorState] = useState<Vector>({x: 0, y:0});
+  const [vectorState, setVectorState] = useState<Vector>(new Vector(0, 0));
 
   useEffect(() =>
   {
@@ -18,7 +17,7 @@ function Test1()
 
   useEffect(() =>
   {
-    setVectorState({x: Math.sqrt(100/2), y: Math.sqrt(100/2) });
+    setVectorState(new Vector(Math.sqrt(100/2), Math.sqrt(100/2)));
     function measureRect()
     {
       setTerminalBox1X(rect1.current!.getBoundingClientRect().right);

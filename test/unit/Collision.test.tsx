@@ -5,6 +5,8 @@ import { ManagedArray } from '../../src/Collisions';
 import { createdMockedGetBoundingClientRect } from '../../src/createdMockedGetBoundingClientRect';
 import { ElementPair } from '../../src/ElementPair';
 import { Vector } from '../../src/Components/Vector';
+import { PairSet } from '../../src/PairSet';
+import { generateViewport } from '../../src/ViewportBarriers';
 
 describe('collisions class', () => {
         test('Collisions takes in array of elements', () => {
@@ -78,8 +80,10 @@ describe('collisions class', () => {
                 const collisions = new Collisions();
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${0}px)`});
                 const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-10}px, ${0}px)`});
-                const newVectors = collisions.calculateVectorsWithCollisions([new ElementPair(elem, overlappingElement)]);
-                expect(newVectors[0][0]).toEqual(new Vector(0, 0));
+                const pair = new PairSet();
+                pair.add(elem, overlappingElement);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
+                 expect(newVectors[0][0]).toEqual(new Vector(0, 0));
                 expect(newVectors[0][1]).toEqual(new Vector(0, 0));
         })
 
@@ -88,8 +92,21 @@ describe('collisions class', () => {
                 const collisions = new Collisions();
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${20}px, ${0}px)`});
                 const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-10}px, ${0}px)`});
-                const newVectors = collisions.calculateVectorsWithCollisions([new ElementPair(elem, overlappingElement)]);
+                const pair = new PairSet();
+                pair.add(elem, overlappingElement);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
                 expect(newVectors[0][0]).toEqual(new Vector(10, 0));
                 expect(newVectors[0][1]).toEqual(new Vector(-10, 0));
+        })
+
+        test('One force against an impervious barrier', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${20}px, ${0}px)`});
+                const barrier = generateViewport(50,50).right;
+                const pair = new PairSet();
+                pair.add(elem, barrier);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
+                expect(newVectors[0][0]).toEqual(new Vector(-20, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(20, 0));
         })
 });

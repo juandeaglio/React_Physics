@@ -4,7 +4,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import "./index.css";
 import Test1 from '../test/Playwright Fixtures/Test1';
 import Test2 from '../test/Playwright Fixtures/Test2';
 

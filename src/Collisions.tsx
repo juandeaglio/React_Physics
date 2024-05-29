@@ -96,20 +96,42 @@ export class Collisions{
         }
         return colliding;
     }
-    calculateVectorsWithCollisions(collisions: Array<ElementPair>): Array<Array<Vector>>
+    calculateVectorsWithCollisions(collisions: PairSet): Array<Array<Vector>>
     {
         const vectors: Array<Array<Vector>> = [];
-        for(let i = 0; i < collisions.length; i++)
+        const pairArray = collisions.getPairs();
+        for(let i = 0; i < collisions.size; i++)
         {
-            const pair = collisions[i];
-            const transformText = pair.first.current!.style.transform;
-            const secondTransform = pair.second.current!.style.transform;
-            if(transformText != undefined && secondTransform != undefined)
+            const pair: ElementPair = pairArray[i];
+            if (pair.first.current !== undefined && pair.second.current !== undefined)
             {
+                const transformText = pair.first.current?.style.transform;
+                const secondTransform = pair.second.current?.style.transform;
                 const firstVector = parseTransform(transformText);
                 const secondVector = parseTransform(secondTransform);
-                const firstComponent = firstVector[0] - secondVector[0];
-                const secondComponent = firstVector[1] - secondVector[1];
+                let firstComponent;
+                let secondComponent;
+
+                if(!Number.isNaN(firstVector[0]) && !Number.isNaN(secondVector[0]))
+                {
+                    firstComponent = firstVector[0] - secondVector[0];
+                    secondComponent = firstVector[1] - secondVector[1];
+                }
+                else if(Number.isNaN(firstVector[0]) && Number.isNaN(secondVector[0]))
+                {
+                    firstComponent = 0
+                    secondComponent = 0
+                }
+                else if(Number.isNaN(secondVector[0]) )
+                {
+                    firstComponent = -firstVector[0]
+                    secondComponent = -firstVector[1]
+                }
+                else
+                {
+                    firstComponent = -secondVector[0]
+                    secondComponent = -secondVector[1]
+                }
                 vectors.push([new Vector(firstComponent, secondComponent), new Vector(-firstComponent, - secondComponent)]);
             }
         }
