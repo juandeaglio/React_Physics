@@ -5,6 +5,7 @@ import { PairSet } from './PairSet';
 import { Vector } from './Components/Vector';
 import { FakedDOMRect } from '../test/FakedDOMRect';
 import { parseTransform } from '../test/ParseTransform';
+import { MockedRect } from '../test/unit/MockedRect';
 export interface ManagedArray {
     references?: Array<RefObject<SVGSVGElement> | RenderableElement>; // refactorable?
 }
@@ -96,6 +97,29 @@ export class Collisions{
         }
         return colliding;
     }
+    isRectangleDefined(obj: Partial<MockedRect> | undefined): obj is MockedRect {
+        return (
+          obj !== undefined &&
+          obj.right !== undefined &&
+          obj.left !== undefined &&
+          obj.top !== undefined &&
+          obj.bottom !== undefined &&
+          obj.width !== undefined &&
+          obj.height !== undefined
+        );
+    }
+    calculateOverlap(rect1: MockedRect | undefined, rect2: MockedRect| undefined): [number | undefined, number | undefined]
+    {
+        if (this.isRectangleDefined(rect1) && this.isRectangleDefined(rect2))
+        {
+            const center1 = new Vector(rect1.left! + (rect1.right! - rect1.left!), rect1.top! + (rect1.bottom! - rect1.top!));
+            const center2  = new Vector(rect2.left! + (rect2.right! - rect2.left!), rect2.top! + (rect2.bottom! - rect2.top!));
+            const overlapX = Math.abs(center1.x - center2.x) - (rect1.width! + rect2.width!) / 2;
+            const overlapY = Math.abs(center1.y - center2.y) - (rect1.height! + rect2.height!) / 2;
+            return [overlapX, overlapY];
+        }
+        return [undefined, undefined];
+    }
     calculateVectorsWithCollisions(collisions: PairSet): Array<Array<Vector>>
     {
         const vectors: Array<Array<Vector>> = [];
@@ -109,30 +133,13 @@ export class Collisions{
                 const secondTransform = pair.second.current?.style.transform;
                 const firstVector = parseTransform(transformText);
                 const secondVector = parseTransform(secondTransform);
-                let firstComponent;
-                let secondComponent;
 
-                if(!Number.isNaN(firstVector[0]) && !Number.isNaN(secondVector[0]))
-                {
-                    firstComponent = firstVector[0] - secondVector[0];
-                    secondComponent = firstVector[1] - secondVector[1];
-                }
-                else if(Number.isNaN(firstVector[0]) && Number.isNaN(secondVector[0]))
-                {
-                    firstComponent = 0
-                    secondComponent = 0
-                }
-                else if(Number.isNaN(secondVector[0]) )
-                {
-                    firstComponent = -firstVector[0]
-                    secondComponent = -firstVector[1]
-                }
-                else
-                {
-                    firstComponent = -secondVector[0]
-                    secondComponent = -secondVector[1]
-                }
-                vectors.push([new Vector(firstComponent, secondComponent), new Vector(-firstComponent, - secondComponent)]);
+                const overlaps = this.calculateOverlap(pair.first.current?.getBoundingClientRect(), pair.second.current?.getBoundingClientRect());
+                const boundingBoxOverlapX = overlaps[0];
+                const boundingBoxOverlapY = overlaps[1];
+                const xOverlap = +((boundingBoxOverlapX || 0) > 0) - +((boundingBoxOverlapX || 0) < 0);
+                const yOverlap = +((boundingBoxOverlapY || 0) > 0) - +((boundingBoxOverlapY || 0) < 0);
+                vectors.push([new Vector(firstVector[0] * xOverlap , firstVector[1]* yOverlap), new Vector(secondVector[0] * xOverlap, secondVector[1]* yOverlap)]);
             }
         }
         

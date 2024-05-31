@@ -78,13 +78,13 @@ describe('collisions class', () => {
 
         test('Two equal forces collision', () => {
                 const collisions = new Collisions();
-                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${0}px)`});
-                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-10}px, ${0}px)`});
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${10}px)`});
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-5}px, ${-3}px)`});
                 const pair = new PairSet();
                 pair.add(elem, overlappingElement);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
-                 expect(newVectors[0][0]).toEqual(new Vector(0, 0));
-                expect(newVectors[0][1]).toEqual(new Vector(0, 0));
+                expect(newVectors[0][0]).toEqual(new Vector(-10, -10));
+                expect(newVectors[0][1]).toEqual(new Vector(5, 3));
         })
 
         
@@ -95,11 +95,11 @@ describe('collisions class', () => {
                 const pair = new PairSet();
                 pair.add(elem, overlappingElement);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
-                expect(newVectors[0][0]).toEqual(new Vector(10, 0));
-                expect(newVectors[0][1]).toEqual(new Vector(-10, 0));
+                expect(newVectors[0][0]).toEqual(new Vector(-20, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(10, 0));
         })
 
-        test('One force against an impervious barrier', () => {
+        test('One force against an impervious barrier on the x axis', () => {
                 const collisions = new Collisions();
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${20}px, ${0}px)`});
                 const barrier = generateViewport(50,50).right;
@@ -107,6 +107,6 @@ describe('collisions class', () => {
                 pair.add(elem, barrier);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
                 expect(newVectors[0][0]).toEqual(new Vector(-20, 0));
-                expect(newVectors[0][1]).toEqual(new Vector(20, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(0, 0));
         })
 });
