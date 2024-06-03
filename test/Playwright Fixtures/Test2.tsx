@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { AnimatedRect } from '../../src/Components/AnimatedRect';
 import { Vector } from '../../src/Components/Vector';
 import { generateViewport, ViewportBarriers } from '../../src/ViewportBarriers';
@@ -15,39 +15,33 @@ function Test2()
   const [collisionCount, setCollisionCount] = useState<number>(0);
   const [collidedElements, setCollidedElements] = useState<PairSet>();
   const [vectorState, setVectorState] = useState<Vector>(new Vector(0,0));
-  const [barriers, setBarriers] = useState<ViewportBarriers>();
+  const [barriers, setBarriers] = useState<ViewportBarriers>(generateViewport(window.innerWidth, window.innerHeight));
   const [barrierX, setBarrierX] = useState<number>(0);
   const [stopMeasuring, setStop] = useState<boolean>(false);
-  const barrierRefs: React.RefObject<SVGSVGElement>[] = function() {
-    const refs = []
-    for (let i = 0; i < 4; i++)
-    {
-      refs.push(React.createRef<SVGSVGElement>());
-    }
-    return refs;
-  }();
+  
+  const bRef1 = useRef<SVGSVGElement>(null);
+  const bRef2 = useRef<SVGSVGElement>(null);
+  const bRef3 = useRef<SVGSVGElement>(null);
+  const bRef4 = useRef<SVGSVGElement>(null);
 
-  const collisionDetector = useMemo(() => {
-    return new Collisions({references: [rect1].concat(barrierRefs)});
-  }, [barrierRefs])
+  const collisionDetector = useRef<Collisions | null>(null);
 
   useEffect(() =>
   {
     let set = 0;
     function animationLoop()
     {
-      
-      if(barrierRefs[3] && barrierRefs[3].current && barrierRefs[3].current.getBoundingClientRect())
+      if(bRef4 && bRef4.current && bRef4.current.getBoundingClientRect())
       {
-        setBarrierX(barrierRefs[3].current.getBoundingClientRect().left);
+        setBarrierX(bRef4.current.getBoundingClientRect().left);
       }
       if(!stopMeasuring)
       {
-        const collided = collisionDetector.checkTrackedForCollisions()
-        if(set != collisionDetector.totalCollisions)
+        const collided = collisionDetector.current?.checkTrackedForCollisions()
+        if(set != collisionDetector.current?.totalCollisions)
         {
-          set = collisionDetector.totalCollisions;
-          setCollisionCount(collisionDetector.totalCollisions);
+          set = collisionDetector.current?.totalCollisions || 0;
+          setCollisionCount(collisionDetector.current?.totalCollisions || 0);
           setCollidedElements(collided);
         }
         requestAnimationFrame(animationLoop);
@@ -60,12 +54,24 @@ function Test2()
     requestAnimationFrame(animationLoop) // enables collision checking
   })
 
+  useEffect(() => {
+    if (rect1.current !== null && bRef1 !== null && bRef2 !== null && bRef3 !== null
+      && bRef4 !== null) {
+        console.log("Collision Detector initialized.")
+        console.log(rect1.current, bRef1.current, bRef2.current, bRef3.current, bRef4.current);
+        collisionDetector.current = new Collisions({references: [rect1, bRef1, bRef2, bRef3, bRef4]});
+    }
+  }, [rect1, bRef1, bRef2, bRef3, bRef4]);
+
   useEffect(() =>
   {
     if(collidedElements !== undefined && collidedElements.size > 0)
     {
-      const newVectors: Array<Array<Vector>> = collisionDetector.calculateVectorsWithCollisions(collidedElements);
-      setVectorState(newVectors[0][0]);
+      const newVectors: Array<Array<Vector>> | undefined = collisionDetector.current?.calculateVectorsWithCollisions(collidedElements);
+      if (newVectors !== undefined)
+      {
+        setVectorState(newVectors[0][0]);
+      }
     }
   }, [collidedElements])
 
@@ -95,13 +101,11 @@ function Test2()
 
   return (
     <>
-      <StaticCollidable barrierProps={barriers?.top} ref={barrierRefs[0]} />
-      <StaticCollidable barrierProps={barriers?.bottom} ref={barrierRefs[1]} />
-      <StaticCollidable barrierProps={barriers?.left} ref={barrierRefs[2]} />
-      <StaticCollidable barrierProps={barriers?.right} ref={barrierRefs[3]} />
-      <AnimatedRect 
-      ref={rect1} 
-      velocityVector={vectorState} 
+      <StaticCollidable barrierProps={barriers.top} ref={bRef1} />
+      <StaticCollidable barrierProps={barriers.bottom} ref={bRef2} />
+      <StaticCollidable barrierProps={barriers.left} ref={bRef3} />
+      <StaticCollidable barrierProps={barriers.right} ref={bRef4} />
+      <AnimatedRect ref={rect1} velocityVector={vectorState} 
       moreProps={
         {
           "data-testid": "Box-1",

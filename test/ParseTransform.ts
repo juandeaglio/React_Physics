@@ -1,13 +1,25 @@
 
 export function parseTransform(transform: string | undefined): number[] {
-    if (transform === undefined)
+    if (transform === undefined || transform === "")
     {
         return [NaN,NaN];
     }
     const valuesRegex = "\\(.*\\)";
     const splitValues: string[] = transform.match(valuesRegex)![0].split(',');
-    const digitsOnlyX: string = splitValues[0].match(/(-*\d+)|(\d+)/)![0];
-    const digitsOnlyY: string = splitValues[1].match(/(-*\d+)|(\d+)/)![0];
+
+    let digitsOnlyX: string;
+    let digitsOnlyY: string;
+    if(splitValues.length == 1)
+    {
+        // Firefox specific behavior
+        digitsOnlyX = splitValues[0]!.match(/(-*\d+)|(\d+)/)![0];
+        digitsOnlyY = '0';
+    }
+    else
+    {
+        digitsOnlyX = splitValues[0]!.match(/(-*\d+)|(\d+)/)![0];
+        digitsOnlyY = splitValues[1]!.match(/(-*\d+)|(\d+)/)![0];
+    }
 
 
     const elements = [parseInt(digitsOnlyX), parseInt(digitsOnlyY)];

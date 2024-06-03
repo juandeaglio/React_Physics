@@ -21,8 +21,6 @@ export const StaticCollidable = forwardRef<SVGSVGElement, StaticProps>((testProp
         height={testProps.barrierProps?.current?.getBoundingClientRect().height} 
         role="impervious" 
         data-testid={testProps["data-testid"]}>
-            <rect>
-            </rect>
         </svg>
     )
 });

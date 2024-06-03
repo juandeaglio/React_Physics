@@ -87,6 +87,16 @@ describe('collisions class', () => {
                 expect(newVectors[0][1]).toEqual(new Vector(5, 3));
         })
 
+        test('Empty transform', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${10}px)`});
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: ""});
+                const pair = new PairSet();
+                pair.add(elem, overlappingElement);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
+                expect(newVectors[0][0]).toEqual(new Vector(-10, -10));
+                expect(newVectors[0][1]).toEqual(new Vector(0, 0));
+        })
         
         test('Two unequal forces collision', () => {
                 const collisions = new Collisions();
@@ -107,6 +117,17 @@ describe('collisions class', () => {
                 pair.add(elem, barrier);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
                 expect(newVectors[0][0]).toEqual(new Vector(-20, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(0, 0));
+        })
+
+        test('A force with only a single entry (Firefox-specific behavior)', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${1280}px)`});
+                const barrier = generateViewport(50,50).right;
+                const pair = new PairSet();
+                pair.add(elem, barrier);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
+                expect(newVectors[0][0]).toEqual(new Vector(-1280, 0));
                 expect(newVectors[0][1]).toEqual(new Vector(0, 0));
         })
 });
