@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Test1 from '../test/Playwright Fixtures/Test1';
 import Test2 from '../test/Playwright Fixtures/Test2';
+import Test3 from '../test/Playwright Fixtures/Test3';
 
 
 function App() {
@@ -20,6 +21,10 @@ function App() {
         {
           path: "2",
           element: <Test2 />,
+        },
+        {
+          path: "3",
+          element: <Test3 />,
         },
       ],
     },

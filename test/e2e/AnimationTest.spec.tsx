@@ -33,3 +33,16 @@ test('Verify a collision occurs with the edge of the screen', async ({ page }) =
   const resultX = await page.getByTestId('result-Box-1-x').first().textContent() ?? '0';
   expect(parseInt(resultX)).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
+
+test('Perpetual motion of a box after giving initial vector', async ({ page }) => {
+  await page.goto('http://localhost:3000/3/');
+  
+  const rect = page.getByTestId('Box-1');
+  await expect(rect).toBeVisible();
+
+  await page.waitForTimeout(3000);
+
+  const currentX = await page.getByTestId('Box-1-x').first().textContent() ?? '0';
+  const initialX = await page.getByTestId('initial-Box-1-x').first().textContent() ?? '0';
+  expect(parseInt(currentX) - parseInt(initialX)).toBeGreaterThanOrEqual(20);
+});
