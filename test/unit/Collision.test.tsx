@@ -130,4 +130,15 @@ describe('collisions class', () => {
                 expect(newVectors[0][0]).toEqual(new Vector(-1280, 0));
                 expect(newVectors[0][1]).toEqual(new Vector(0, 0));
         })
+
+        test('A force against rect already stuck in barrier', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(101,101,100,100), {transform: `translate(${-1280}px)`});
+                const barrier = generateViewport(200,200).right;
+                const pair = new PairSet();
+                pair.add(elem, barrier);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
+                expect(newVectors[0][0]).toEqual(new Vector(-1280, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(0, 0));
+        })
 });

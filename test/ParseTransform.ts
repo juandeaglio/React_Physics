@@ -21,7 +21,6 @@ export function parseTransform(transform: string | undefined): number[] {
         digitsOnlyY = splitValues[1]!.match(/(-*\d+)|(\d+)/)![0];
     }
 
-
     const elements = [parseInt(digitsOnlyX), parseInt(digitsOnlyY)];
     return elements;
 }

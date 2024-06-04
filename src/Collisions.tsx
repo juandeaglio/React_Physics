@@ -114,8 +114,16 @@ export class Collisions{
         {
             const center1 = new Vector(rect1.left! + (rect1.right! - rect1.left!), rect1.top! + (rect1.bottom! - rect1.top!));
             const center2  = new Vector(rect2.left! + (rect2.right! - rect2.left!), rect2.top! + (rect2.bottom! - rect2.top!));
-            const overlapX = Math.abs(center1.x - center2.x) - (rect1.width! + rect2.width!) / 2;
-            const overlapY = Math.abs(center1.y - center2.y) - (rect1.height! + rect2.height!) / 2;
+            let overlapX = Math.abs(Math.abs(center1.x - center2.x) - (rect1.width! + rect2.width!) / 2);
+            let overlapY = Math.abs(Math.abs(center1.y - center2.y) - (rect1.height! + rect2.height!) / 2);
+            if(center1.x < center2.x)
+            {
+                overlapX = -overlapX
+            }
+            if(center1.y < center2.y)
+            {
+                overlapY = -overlapY
+            }
             return [overlapX, overlapY];
         }
         return [undefined, undefined];
@@ -139,7 +147,7 @@ export class Collisions{
                 const boundingBoxOverlapY = overlaps[1];
                 const xOverlap = +((boundingBoxOverlapX || 0) > 0) - +((boundingBoxOverlapX || 0) < 0);
                 const yOverlap = +((boundingBoxOverlapY || 0) > 0) - +((boundingBoxOverlapY || 0) < 0);
-                vectors.push([new Vector(firstVector[0] * xOverlap , firstVector[1]* yOverlap), new Vector(secondVector[0] * xOverlap, secondVector[1]* yOverlap)]);
+                vectors.push([new Vector(Math.abs(firstVector[0]) * xOverlap , Math.abs(firstVector[1])* yOverlap), new Vector(-Math.abs(secondVector[0]) * xOverlap, -Math.abs(secondVector[1]) * yOverlap)]);
             }
         }
         

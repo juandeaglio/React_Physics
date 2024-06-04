@@ -96,7 +96,7 @@ function Test2()
       }
       setStop(true);
     }
-    setTimeout(measureRect, 1000);
+    setTimeout(measureRect, 1500);
   }, [])
 
   return (

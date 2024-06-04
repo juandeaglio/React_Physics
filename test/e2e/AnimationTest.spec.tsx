@@ -20,7 +20,7 @@ test('Verify a collision occurs with the edge of the screen', async ({ page }) =
   await expect(rect).toBeVisible();
 
   await expect(counter).toBeVisible();
-  await page.waitForTimeout(1100);
+  await page.waitForTimeout(1600);
 
   const barrierX = await page.getByTestId('right-Barrier').first().textContent() ?? '0';
   await expect(parseInt(barrierX)).toBeCloseTo(page.viewportSize()!.width, -1);
