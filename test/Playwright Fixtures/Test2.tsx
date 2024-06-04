@@ -87,7 +87,7 @@ function Test2()
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    setVectorState(new Vector(window.innerWidth, 0));
+    setVectorState(new Vector(1000, 0));
     function measureRect()
     {
       if(rect1.current)

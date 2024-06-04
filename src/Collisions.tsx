@@ -73,27 +73,31 @@ export class Collisions{
         return false;
     }
     
+    addAllElementsIntersectedWith(element: RefObject<SVGSVGElement> | RenderableElement, addTo: PairSet): PairSet
+    {
+        const elements = this.__getElements();
+        for(let j = 0; j < elements.length; j++)
+        {
+            const other = elements[j];
+            if (element != elements[j] && this.isColliding(element, other))
+            {
+                if (!addTo.has(new ElementPair(element, other)))
+                {
+                    addTo.add(element, other);
+                }
+            }
+        }
+        return addTo;
+    }
+
     checkTrackedForCollisions() : PairSet
     {
-        const colliding = new PairSet();
+        let colliding = new PairSet();
         const elements = this.__getElements();
         for(let i = 0; i < elements.length; i++)
         {
-            for(let j = 0; j < elements.length; j++)
-            {
-                const element = elements[i]
-                if (element != elements[j])
-                {
-                    const other = elements[j];
-                    if(this.isColliding(element, other))
-                    {
-                        if (!colliding.has(new ElementPair(element, other)))
-                        {
-                            colliding.add(element, other);
-                        }
-                    }
-                }
-            }
+            const element = elements[i]
+            colliding = this.addAllElementsIntersectedWith(element, colliding);
         }
         return colliding;
     }
@@ -139,15 +143,17 @@ export class Collisions{
             {
                 const transformText = pair.first.current?.style.transform;
                 const secondTransform = pair.second.current?.style.transform;
+
                 const firstVector = parseTransform(transformText);
                 const secondVector = parseTransform(secondTransform);
 
                 const overlaps = this.calculateOverlap(pair.first.current?.getBoundingClientRect(), pair.second.current?.getBoundingClientRect());
                 const boundingBoxOverlapX = overlaps[0];
                 const boundingBoxOverlapY = overlaps[1];
-                const xOverlap = +((boundingBoxOverlapX || 0) > 0) - +((boundingBoxOverlapX || 0) < 0);
-                const yOverlap = +((boundingBoxOverlapY || 0) > 0) - +((boundingBoxOverlapY || 0) < 0);
-                vectors.push([new Vector(Math.abs(firstVector[0]) * xOverlap , Math.abs(firstVector[1])* yOverlap), new Vector(-Math.abs(secondVector[0]) * xOverlap, -Math.abs(secondVector[1]) * yOverlap)]);
+                const normalizedX = +((boundingBoxOverlapX || 0) > 0) - +((boundingBoxOverlapX || 0) < 0);
+                const normalizedY = +((boundingBoxOverlapY || 0) > 0) - +((boundingBoxOverlapY || 0) < 0);
+
+                vectors.push([new Vector(Math.abs(firstVector[0]) * normalizedX , Math.abs(firstVector[1])* normalizedY), new Vector(-Math.abs(secondVector[0]) * normalizedX, -Math.abs(secondVector[1]) * normalizedY)]);
             }
         }
         
