@@ -1,4 +1,4 @@
-import { useState, useEffect, RefObject, forwardRef, MutableRefObject } from 'react';
+import { useState, useEffect, RefObject, forwardRef, CSSProperties, useRef, useReducer } from 'react';
 import styled from 'styled-components';
 import { Vector } from './Vector';
 
@@ -20,146 +20,77 @@ export interface AnimatedRectProps {
   moreProps?: GenericProps;
 }
 
+interface UpdateVectorAction {
+  type: 'UPDATE_VECTOR';
+  payload: {
+    velocityVector: Vector;
+    targetFrameRate: number;
+  };
+
+}
+type VectorAction = UpdateVectorAction;
+
+const initialVector = new Vector(0, 0);
+
+const vectorReducer = (state: Vector, action: VectorAction) => {
+  if (action.type === 'UPDATE_VECTOR') {
+    const { velocityVector, targetFrameRate } = action.payload;
+    return state.add(
+      new Vector(
+        (velocityVector.x || 0) / targetFrameRate,
+        (velocityVector.y || 0) / targetFrameRate
+      )
+    );
+  }
+  return state;
+};
+
+
 export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props, ref) => {
-  const [transform, setTransform] = useState<string>("");
-  const [transition, setTransition] = useState<string>("");
-  const [initialSet, setInitial] = useState<boolean>(false);
-  const [resetSet, setReset] = useState<boolean>(false);
-  const [animateSet, setAnimate] = useState<boolean>(false);
-  const [completeSet, setComplete] = useState<boolean>(false);
+  const [style, setStyle] = useState<CSSProperties>({position: "absolute", left:"0px", bottom:"0px"});
+  const start = useRef<number>(Date.now());
+  const renderedVector = useRef<Vector>();
 
-  const [left, setLeft] = useState<string>(props.left || "0px");
-
-  let currentVector: Vector;
-  if(props.velocityVector)
-  {
-    currentVector = props.velocityVector;
-  }
-  else
-  {
-    currentVector = new Vector();
-  }
-
-  useEffect(() => 
-  {
-    if(ref)
-    {
-      setTransform(`translate(${currentVector.x}px, ${currentVector.y}px)`);
-      const duration = 1;
-      const delay = 0;
-      setTransition(`transform ${duration}s linear ${delay}s`);
-    }
-  }, [ref, currentVector, props.moreProps])
-
-  function setNewInitialPosition(ref: MutableRefObject<SVGSVGElement | null>) {
-    if (ref.current) 
-    {
-      const boundingRect = ref.current?.getBoundingClientRect();
-      if (boundingRect?.left !== undefined)
-      {
-        console.log("1: Left", boundingRect?.left);
-        console.log("1: Transform", transform);
-        console.log("1: Transition", transition);
-        setLeft(boundingRect.left.toString())
-        setTransform(`translate(${0}px, ${0}px)`);
-        setTransition(`transform ${0}s linear ${0}s`);
-      }
-    }
-  }
-
-  useEffect(() =>
-  {
-    if(initialSet)
-    {
-      if (ref && typeof ref !== 'function') 
-      {
-        requestAnimationFrame(() => {
-          setNewInitialPosition(ref);    
-          setInitial(false);
-          setReset(true);
-        });
-      }
-    }
-  }, [initialSet])
-
-  function resetTransformAnimation(ref: MutableRefObject<SVGSVGElement | null>) 
-  {
-    if (ref.current) 
-    {
-      
-      console.log("2: Transform", transform);
-      console.log("2: Transition", transition);
-      setTransition(`transform ${1}s linear ${0}s`);
-    }
-  }
-  
-  useEffect(() =>
-  {
-    if(resetSet)
-    {
-      if (ref && typeof ref !== 'function') 
-      {
-        requestAnimationFrame(() => {
-          resetTransformAnimation(ref);
-          setReset(false);
-          setAnimate(true);
-        });
-      }
-    }
-  }, [resetSet])
-
-    
-  function setNewAnimation(ref: MutableRefObject<SVGSVGElement | null>) 
-  {
-    if (ref.current) 
-    {
-      console.log("3: Transform", transform);
-      console.log("3: Transition", transition);
-      setTransform(`translate(${props.velocityVector?.x}px, ${props.velocityVector?.y}px)`);
-      setAnimate(true);
-    }
-  }
-
-  useEffect(() =>
-  {
-    if(animateSet)
-    {
-      if (ref && typeof ref !== 'function') 
-      {
-        requestAnimationFrame(() => {
-          setNewAnimation(ref);
-          setAnimate(false);
-          setComplete(true);
-        });
-      }
-    }
-  }, [animateSet])
-  
-  useEffect(() => {
-    if(completeSet)
-    {
-      if (ref && typeof ref !== 'function') 
-      {
-        if (ref.current) 
-        {
-          const boundingRect = ref.current?.getBoundingClientRect();
-          if (boundingRect?.left !== undefined)
-          {
-            console.log("Done: Left", boundingRect?.left);
-            console.log("Done: Transform", transform);
-            console.log("Done: Transition", transition);
-          }
-        }
-        setComplete(false);
-      }
-    }
-  }, [completeSet])
+  const [vector, dispatch] = useReducer(vectorReducer, initialVector);
 
   useEffect(() => {
-    addEventListener("transitionend", () => {
-      setInitial(true);
-    });
-  })
+    // process every frame 60 frames per second
+    const targetFrameRate = 60;
+    let frameId: number;
+
+    function updateValues()
+    {
+      if(props.velocityVector !== undefined && renderedVector.current !== undefined  && props.velocityVector.x !== undefined && props.velocityVector.y !== undefined)
+      {
+        dispatch({
+          type: 'UPDATE_VECTOR',
+          payload: {
+            velocityVector: props.velocityVector,
+            targetFrameRate,
+          },
+        });
+      }
+      setStyle({position: "absolute", left: `${vector.x}px`, bottom: `${vector.y}px`})
+      frameId = requestAnimationFrame(updateValues);
+    }
+    frameId = requestAnimationFrame(updateValues);
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
+  }, [props.velocityVector, vector.x, vector.y]);
+
+  useEffect(() => {
+    renderedVector.current = vector;
+
+    const targetFrameRate = 60;
+    const delta = Date.now() - start.current;
+    if(props.velocityVector !== undefined && delta < 1000)
+    {
+      console.log("Elapsed Time: ", delta)
+      console.log("Current: ", renderedVector.current?.x, ", ", renderedVector.current?.y)
+      console.log("Adding ", props.velocityVector?.x / targetFrameRate, " and ", props.velocityVector?.y / targetFrameRate)
+    }
+  }, [vector.x, vector, props.velocityVector])
   
   return (
     <svg 
@@ -168,13 +99,7 @@ export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props,
       height="100px"
       role="animatable"
       ref={ref}
-      style={
-        {
-          position: "absolute",
-          left: left,
-          transform: transform,
-          transition: transition
-        }}
+      style={style}
     >
       <Rect /> 
     </svg>

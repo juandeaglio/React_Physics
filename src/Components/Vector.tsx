@@ -19,6 +19,14 @@ export class Vector {
       this.y = 0;
     }
   }
+
+  add(other: Vector)
+  {
+    this.x = this.x + other.x;
+    this.y = this.y + other.y;
+    return this;
+  }
+
   equals(other: Vector)
   {
     if (this.x === other.x && this.y === other.y)

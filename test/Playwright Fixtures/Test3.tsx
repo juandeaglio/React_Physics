@@ -19,6 +19,7 @@ function Test3()
       if (Box1X != 0 && Box1X - initialBox1X >= 30)
       {
         setStop(true);
+        setVectorState(new Vector(0,0));
       }
       if (!stopMeasuring)
       {
@@ -32,7 +33,7 @@ function Test3()
   {
     setInitialBox1X(rect1.current!.getBoundingClientRect().left);
     setVectorState(new Vector(10, 0));
-  }, [rect1])
+  }, [])
 
   return (
     <>
