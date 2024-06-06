@@ -5,7 +5,6 @@ import { render } from '@testing-library/react';
 import { screen } from '@testing-library/dom';
 import { AnimatedRect } from '../src/Components/AnimatedRect';
 import {describe, test} from '@jest/globals';
-import { FakedDOMRect } from './FakedDOMRect';
 import { Vector } from '../src/Components/Vector';
 
 interface AppProps {
@@ -29,25 +28,13 @@ function App({children}: AppProps)
     );
 }
 
-
-function getFakedClientRect(virtualElement: Element | null): FakedDOMRect | undefined
-{
-    if(virtualElement)
-    {
-        return new FakedDOMRect(0, 0, 100, 100);
-    }
-    else
-    {
-        return undefined;
-    }
-}
-
 describe('animatedrect component', () => {
     test('shows an animatedrect', () => {
         const testMessage = 'Test Message'
         render(<App>{testMessage}</App>)
-
-        expect(screen.queryAllByRole("animatable")[0]).toBeVisible();
+        const element = screen.queryAllByRole("animatable")[0];
+        expect(element).toBeVisible();
+        expect(element).toHaveAttribute('data-velocityvector')
     })
 
 });

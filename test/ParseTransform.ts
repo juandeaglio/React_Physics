@@ -4,8 +4,7 @@ export function parseTransform(transform: string | undefined): number[] {
     {
         return [NaN,NaN];
     }
-    const valuesRegex = "\\(.*\\)";
-    const splitValues: string[] = transform.match(valuesRegex)![0].split(',');
+    const splitValues: string[] = transform.split(',');
 
     let digitsOnlyX: string;
     let digitsOnlyY: string;

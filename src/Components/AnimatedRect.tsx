@@ -94,6 +94,7 @@ export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props,
   
   return (
     <svg 
+      data-velocityvector={`${props.velocityVector?.x}, ${props.velocityVector?.y}`}
       data-testid={props.moreProps?.['data-testid']} 
       width="100px"
       height="100px"
