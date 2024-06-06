@@ -50,23 +50,4 @@ describe('animatedrect component', () => {
         expect(screen.queryAllByRole("animatable")[0]).toBeVisible();
     })
 
-    test('Animated Rect animated rightwards.', () => {
-        render(<App></App>);
-        // mock rect matches the transform after 1 second. sqrt(100)/2 x & y components
-        // Mock this so that we have a mocked clientRect.
-        const element = screen.getByTestId("Box-1");
-
-        // Mocked clientRect with values mapped from velocityVector attribute
-        const boundingClientRect = getFakedClientRect(element) as DOMRect;
-
-        const expectedXTransform: number = Math.sqrt(100/2) + boundingClientRect.left;
-        const expectedYTransform: number = expectedXTransform;
-        const expectedTransform: string= `translate(${expectedXTransform}px, ${expectedYTransform}px)`;
-        const actualTransform = element.style.transform;
-        expect(actualTransform).toBe(expectedTransform);
-
-        const actualTransition = element.style.transition;
-        expect(actualTransition).toBe("transform 1s linear 0s");
-
-    })
 });

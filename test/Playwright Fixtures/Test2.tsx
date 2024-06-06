@@ -48,7 +48,7 @@ function Test2()
       }
       else
       {
-        setVectorState(new Vector(rect1.current!.getBoundingClientRect().left, 0)); 
+        setVectorState(new Vector(0, 0)); 
       }
     }
     requestAnimationFrame(animationLoop) // enables collision checking
@@ -70,6 +70,7 @@ function Test2()
       const newVectors: Array<Array<Vector>> | undefined = collisionDetector.current?.calculateVectorsWithCollisions(collidedElements);
       if (newVectors !== undefined)
       {
+        console.log("New vector: ", newVectors[0][0])
         setVectorState(newVectors[0][0]);
       }
     }
@@ -87,7 +88,7 @@ function Test2()
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    setVectorState(new Vector(1000, 0));
+    setVectorState(new Vector(window.innerWidth, 0));
     function measureRect()
     {
       if(rect1.current)
