@@ -4,7 +4,7 @@ import { ElementPair } from './ElementPair';
 import { PairSet } from './PairSet';
 import { Vector } from './Components/Vector';
 import { FakedDOMRect } from '../test/FakedDOMRect';
-import { parseTransform } from '../test/ParseTransform';
+import { parseVelocityVectorAttribute } from '../test/ParseTransform';
 import { MockedRect } from '../test/unit/MockedRect';
 export interface ManagedArray {
     references?: Array<RefObject<SVGSVGElement> | RenderableElement>; // refactorable?
@@ -141,11 +141,11 @@ export class Collisions{
             const pair: ElementPair = pairArray[i];
             if (pair.first.current !== undefined && pair.second.current !== undefined)
             {
-                const transformText = pair.first.current?.style.transform;
-                const secondTransform = pair.second.current?.style.transform;
+                const transformText = pair.first.current?.getAttribute("data-velocityvector");
+                const secondTransform = pair.second.current?.getAttribute("data-velocityvector");
 
-                const firstVector = parseTransform(transformText);
-                const secondVector = parseTransform(secondTransform);
+                const firstVector = parseVelocityVectorAttribute(transformText);
+                const secondVector = parseVelocityVectorAttribute(secondTransform);
 
                 const overlaps = this.calculateOverlap(pair.first.current?.getBoundingClientRect(), pair.second.current?.getBoundingClientRect());
                 const boundingBoxOverlapX = overlaps[0];

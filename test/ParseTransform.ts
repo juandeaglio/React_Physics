@@ -1,10 +1,10 @@
 
-export function parseTransform(transform: string | undefined): number[] {
-    if (transform === undefined || transform === "")
+export function parseVelocityVectorAttribute(velocityVector: string | undefined | null): number[] {
+    if (velocityVector === undefined || velocityVector === null || velocityVector === "")
     {
         return [NaN,NaN];
     }
-    const splitValues: string[] = transform.split(',');
+    const splitValues: string[] = velocityVector.split(',');
 
     let digitsOnlyX: string;
     let digitsOnlyY: string;

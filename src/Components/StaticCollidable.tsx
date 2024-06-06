@@ -3,7 +3,7 @@ import { forwardRef, RefObject } from "react";
 
 export interface StaticProps{
     "data-testid"?: string;
-    barrierProps?: RenderableElement | RefObject<SVGRectElement>
+    barrierProps?: RenderableElement | RefObject<SVGSVGElement>
 }
 
 export const StaticCollidable = forwardRef<SVGSVGElement, StaticProps>((testProps: StaticProps, ref) => {

@@ -16,10 +16,10 @@ export function generateViewport(width: number, height: number): ViewportBarrier
 
 export interface ViewportBarriers
 {
-    top: RenderableElement | RefObject<SVGRectElement>,
-    bottom: RenderableElement | RefObject<SVGRectElement>,
-    left: RenderableElement | RefObject<SVGRectElement>,
-    right: RenderableElement | RefObject<SVGRectElement>,
+    top: RenderableElement | RefObject<SVGSVGElement>,
+    bottom: RenderableElement | RefObject<SVGSVGElement>,
+    left: RenderableElement | RefObject<SVGSVGElement>,
+    right: RenderableElement | RefObject<SVGSVGElement>,
 }
 
 export function useWindowAsCollisionBarriers(barriers: ViewportBarriers | undefined, setBarriers: React.Dispatch<React.SetStateAction<ViewportBarriers | undefined>>)

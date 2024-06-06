@@ -1,21 +1,30 @@
 import { MockedRect } from '../test/unit/MockedRect';
 
-export interface MockedStyle
+export interface AttributesMap
 {
-    transform?: string,
+    "data-velocityvector"?: Map<string, string>,
 }
 
 export interface RenderableElementType {
     getBoundingClientRect: () => MockedRect;
-    style: MockedStyle;
+    getAttribute: (key: string) => string | undefined;
 }
 
 export class RenderableElement {
     current: RenderableElementType | null = null;
-    constructor(elemRect: () => MockedRect, style?: MockedStyle ) {
+    constructor(elemRect: () => MockedRect, vector?: string ) {
+        const velocityVector = new Map<string, string>();
+        if (vector !== undefined)
+        {
+            velocityVector.set("data-velocityvector", vector);
+        }
+        else
+        {
+            velocityVector.set("data-velocityvector", "0,0");
+        }
         this.current = { 
             getBoundingClientRect: elemRect, 
-            style: style || {},
+            getAttribute: (key: string) => velocityVector.get(key),
         };
     }
 }

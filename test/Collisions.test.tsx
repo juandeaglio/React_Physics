@@ -11,7 +11,7 @@ import { createdMockedGetBoundingClientRect } from '../src/createdMockedGetBound
 import { ViewportBarriers, generateViewport} from '../src/ViewportBarriers';
 import { ScreenLimitations } from './ScreenLimitations';
 import { Vector } from '../src/Components/Vector';
-import { parseTransform } from './ParseTransform';
+import { parseVelocityVectorAttribute } from './ParseTransform';
 
 interface AppProps {
     children?: ReactNode;
@@ -46,9 +46,9 @@ describe('collisionCalculator class', () => {
     test('We check for a collision with the right edge of screen', () => {
         render(<App></App>);
         const velocityVector = screen.getByTestId("Box-1").getAttribute("data-velocityvector");
-        const actualX = parseTransform(velocityVector!)[0];
+        const actualX = parseVelocityVectorAttribute(velocityVector!)[0];
         const box1Rect: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(actualX, 0, rectWidth, rectWidth));
-        const viewPortRect: RenderableElement = viewPortBarriers.right;
+        const viewPortRect = viewPortBarriers.right;
         const collisionCalculator = new Collisions();
     
         expect(collisionCalculator.isColliding(box1Rect, viewPortRect)).toBe(true);

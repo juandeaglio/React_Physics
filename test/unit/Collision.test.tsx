@@ -78,8 +78,8 @@ describe('collisions class', () => {
 
         test('Two equal forces collision', () => {
                 const collisions = new Collisions();
-                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${10}px)`});
-                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-5}px, ${-3}px)`});
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), "10, 10");
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), "-5, -3");
                 const pair = new PairSet();
                 pair.add(elem, overlappingElement);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
@@ -89,8 +89,8 @@ describe('collisions class', () => {
 
         test('Empty transform', () => {
                 const collisions = new Collisions();
-                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${10}px, ${10}px)`});
-                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: ""});
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), "10, 10");
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100));
                 const pair = new PairSet();
                 pair.add(elem, overlappingElement);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
@@ -100,8 +100,8 @@ describe('collisions class', () => {
         
         test('Two unequal forces collision', () => {
                 const collisions = new Collisions();
-                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${20}px, ${0}px)`});
-                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), {transform: `translate(${-10}px, ${0}px)`});
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), "20, 0");
+                const overlappingElement: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(99,99,100,100), "-10, 0");
                 const pair = new PairSet();
                 pair.add(elem, overlappingElement);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
@@ -111,7 +111,7 @@ describe('collisions class', () => {
 
         test('One force against an impervious barrier on the x axis', () => {
                 const collisions = new Collisions();
-                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${20}px, ${0}px)`});
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), "20, 0");
                 const barrier = generateViewport(50,50).right;
                 const pair = new PairSet();
                 pair.add(elem, barrier);
@@ -122,7 +122,7 @@ describe('collisions class', () => {
 
         test('A force with only a single entry (Firefox-specific behavior)', () => {
                 const collisions = new Collisions();
-                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), {transform: `translate(${1280}px)`});
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), "1280, 0");
                 const barrier = generateViewport(50,50).right;
                 const pair = new PairSet();
                 pair.add(elem, barrier);
@@ -133,7 +133,7 @@ describe('collisions class', () => {
 
         test('A force against rect already stuck in barrier', () => {
                 const collisions = new Collisions();
-                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(101,101,100,100), {transform: `translate(${-1280}px)`});
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(101,101,100,100), "1280, 0");
                 const barrier = generateViewport(200,200).right;
                 const pair = new PairSet();
                 pair.add(elem, barrier);
