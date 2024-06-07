@@ -16,7 +16,7 @@ function Test3()
     {
       setBox1X(rect1.current!.getBoundingClientRect().left);
 
-      if (Box1X != 0 && Box1X - initialBox1X >= 30)
+      if (Box1X != 0 && Box1X - initialBox1X >= 40)
       {
         setStop(true);
         setVectorState(new Vector(0,0));
