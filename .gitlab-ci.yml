@@ -47,6 +47,5 @@ playwright tests:
     - npm install -g @playwright/test@latest
     - npx playwright install
     - npx playwright install-deps
-    - npm install playwright
     - npm dedupe
     - npx playwright test
