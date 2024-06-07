@@ -9,6 +9,10 @@ COPY index.html .babelrc .eslintrc.cjs .eslintrc.json package.json package-lock.
 
 # Install the npm dependencies
 RUN npm ci
+RUN npm install @rollup/rollup-linux-x64-gnu
+RUN npx playwright install
+RUN npm install -g serve
+RUN npx playwright install-deps
 
 # Set the default command to run when the container starts
 CMD ["sh"]

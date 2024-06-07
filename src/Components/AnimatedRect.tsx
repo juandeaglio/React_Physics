@@ -82,13 +82,13 @@ export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props,
   useEffect(() => {
     renderedVector.current = vector;
 
-    const targetFrameRate = 60;
+    //const targetFrameRate = 60;
     const delta = Date.now() - start.current;
     if(props.velocityVector !== undefined && delta < 1000)
     {
-      console.log("Elapsed Time: ", delta)
-      console.log("Current: ", renderedVector.current?.x, ", ", renderedVector.current?.y)
-      console.log("Adding ", props.velocityVector?.x / targetFrameRate, " and ", props.velocityVector?.y / targetFrameRate)
+      //console.log("Elapsed Time: ", delta)
+      //console.log("Current: ", renderedVector.current?.x, ", ", renderedVector.current?.y)
+      //console.log("Adding ", props.velocityVector?.x / targetFrameRate, " and ", props.velocityVector?.y / targetFrameRate)
     }
   }, [vector.x, vector, props.velocityVector])
   

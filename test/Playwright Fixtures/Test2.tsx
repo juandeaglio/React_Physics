@@ -57,8 +57,6 @@ function Test2()
   useEffect(() => {
     if (rect1.current !== null && bRef1 !== null && bRef2 !== null && bRef3 !== null
       && bRef4 !== null) {
-        console.log("Collision Detector initialized.")
-        console.log(rect1.current, bRef1.current, bRef2.current, bRef3.current, bRef4.current);
         collisionDetector.current = new Collisions({references: [rect1, bRef1, bRef2, bRef3, bRef4]});
     }
   }, [rect1, bRef1, bRef2, bRef3, bRef4]);
@@ -70,7 +68,6 @@ function Test2()
       const newVectors: Array<Array<Vector>> | undefined = collisionDetector.current?.calculateVectorsWithCollisions(collidedElements);
       if (newVectors !== undefined)
       {
-        console.log("New vector: ", newVectors[0][0])
         setVectorState(newVectors[0][0]);
       }
     }
@@ -88,7 +85,7 @@ function Test2()
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    setVectorState(new Vector(window.innerWidth, 0));
+    setVectorState(new Vector(window.innerWidth*2, 0));
     function measureRect()
     {
       if(rect1.current)
