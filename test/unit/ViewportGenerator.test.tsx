@@ -8,7 +8,7 @@ import { ScreenLimitations } from '../ScreenLimitations';
 describe('generate viewports based on screen size', () => {
     const screenWidth = new ScreenLimitations().screenWidth;
     const screenHeight = new ScreenLimitations().screenHeight;
-    const barrierWidthHeight = 100;
+    const barrierWidthHeight = 200;
     let viewPortBarriers: ViewportBarriers;
 
     beforeEach(() => {
@@ -45,5 +45,12 @@ describe('generate viewports based on screen size', () => {
         expect(leftBarrier.bottom).toBe(screenHeight);
         expect(leftBarrier.left).toBe(-barrierWidthHeight);
         expect(leftBarrier.right).toBe(0);
+    })
+
+    test('Generate barriers that are not on screen', () => {
+        expect(viewPortBarriers.left.current?.getBoundingClientRect().right).toBeLessThanOrEqual(0);
+        expect(viewPortBarriers.right.current?.getBoundingClientRect().left).toBeGreaterThanOrEqual(screenWidth);
+        expect(viewPortBarriers.top.current?.getBoundingClientRect().bottom).toBeLessThanOrEqual(0);
+        expect(viewPortBarriers.bottom.current?.getBoundingClientRect().top).toBeGreaterThanOrEqual(screenHeight);
     })
 });

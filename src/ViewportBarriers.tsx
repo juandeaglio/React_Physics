@@ -7,7 +7,7 @@ export function generateViewport(width: number, height: number, barrierHeight: n
     return {
         top: new RenderableElement(createdMockedGetBoundingClientRect(0, -barrierHeight, width, barrierHeight)),
         bottom: new RenderableElement(createdMockedGetBoundingClientRect(0, height, width, barrierHeight)),
-        left: new RenderableElement(createdMockedGetBoundingClientRect(-100, 0, barrierWidth, height)),
+        left: new RenderableElement(createdMockedGetBoundingClientRect(-barrierWidth, 0, barrierWidth, height)),
         right: new RenderableElement(createdMockedGetBoundingClientRect(width, 0, barrierWidth, height)),
     }
 }
