@@ -1,4 +1,3 @@
-
 import { Collisions } from '../../src/Collisions';
 import { RenderableElement } from '../../src/RenderableElement';
 import { ManagedArray } from '../../src/Collisions';

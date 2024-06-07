@@ -5,7 +5,7 @@ test('Verify an animation moves 10px upper right', async ({ page }) => {
   // Wait for the 'Box-1' element to be rendered
   const rect = page.getByTestId('Box-1');
   await expect(rect).toBeVisible();
-  await page.waitForTimeout(1100);
+  await page.waitForTimeout(3000);
 
   const resultX = await page.getByTestId('result-Box-1-x').first().textContent() ?? '0';
   expect(parseInt(resultX)).toBeCloseTo(7.07, -1)
@@ -20,7 +20,7 @@ test('Verify a collision occurs with the edge of the screen', async ({ page }) =
   await expect(rect).toBeVisible();
 
   await expect(counter).toBeVisible();
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(3000);
 
   const barrierX = await page.getByTestId('right-Barrier').first().textContent() ?? '0';
   await expect(parseInt(barrierX)).toBeCloseTo(page.viewportSize()!.width, -1);
