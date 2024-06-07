@@ -12,7 +12,7 @@ describe('generate viewports based on screen size', () => {
     let viewPortBarriers: ViewportBarriers;
 
     beforeEach(() => {
-        viewPortBarriers = generateViewport(screenWidth,screenHeight);
+        viewPortBarriers = generateViewport(screenWidth,screenHeight, barrierWidthHeight, barrierWidthHeight);
     })
 
     test('Generate top barrier on a screen', () => {

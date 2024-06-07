@@ -7,6 +7,10 @@ import { Vector } from '../../src/Components/Vector';
 import { PairSet } from '../../src/PairSet';
 import { generateViewport } from '../../src/ViewportBarriers';
 
+const barrierHeight: number = 100;
+const barrierWidth: number = 100;
+
+
 describe('collisions class', () => {
         test('Collisions takes in array of elements', () => {
                 const empty: ManagedArray = {references: []};
@@ -111,7 +115,7 @@ describe('collisions class', () => {
         test('One force against an impervious barrier on the x axis', () => {
                 const collisions = new Collisions();
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), "20, 0");
-                const barrier = generateViewport(50,50).right;
+                const barrier = generateViewport(50,50, barrierWidth, barrierHeight).right;
                 const pair = new PairSet();
                 pair.add(elem, barrier);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
@@ -122,7 +126,7 @@ describe('collisions class', () => {
         test('A force with only a single entry (Firefox-specific behavior)', () => {
                 const collisions = new Collisions();
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(0,0,100,100), "1280, 0");
-                const barrier = generateViewport(50,50).right;
+                const barrier = generateViewport(50,50, barrierWidth, barrierHeight).right;
                 const pair = new PairSet();
                 pair.add(elem, barrier);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);
@@ -133,7 +137,7 @@ describe('collisions class', () => {
         test('A force against rect already stuck in barrier', () => {
                 const collisions = new Collisions();
                 const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(101,101,100,100), "1280, 0");
-                const barrier = generateViewport(200,200).right;
+                const barrier = generateViewport(200,200, barrierWidth, barrierHeight).right;
                 const pair = new PairSet();
                 pair.add(elem, barrier);
                 const newVectors = collisions.calculateVectorsWithCollisions(pair);

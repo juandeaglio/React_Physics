@@ -34,12 +34,14 @@ function App({children}: AppProps)
     );
 }
 
+const barrierWidth: number = 100;
+const barrierHeight: number = 100;
 describe('collisionCalculator class', () => {
     const screenWidth = new ScreenLimitations().screenWidth;
     const screenHeight = new ScreenLimitations().screenHeight;
     const rectWidth = new ScreenLimitations().rectWidth;
 
-    const viewPortBarriers: ViewportBarriers = generateViewport(screenWidth,screenHeight)
+    const viewPortBarriers: ViewportBarriers = generateViewport(screenWidth,screenHeight, barrierWidth, barrierHeight)
 
 
 

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('Verify an animation moves 10px upper right', async ({ page }) => {
-  page.setViewportSize({width: 480, height: 480})
+  page.setViewportSize({width: 1280, height: 720})
   await page.goto('http://localhost:3000/1/');
   
   // Wait for the 'Box-1' element to be rendered
@@ -16,7 +16,7 @@ test('Verify an animation moves 10px upper right', async ({ page }) => {
 });
  
 test('Verify a collision occurs with the edge of the screen', async ({ page }) => {
-  page.setViewportSize({width: 480, height: 480})
+  page.setViewportSize({width: 1280, height: 720})
   await page.goto('http://localhost:3000/2/');
   const counter = page.getByTestId('collision-counter');
 
@@ -44,7 +44,7 @@ test('Verify a collision occurs with the edge of the screen', async ({ page }) =
 });
 
 test('Perpetual motion of a box after giving initial vector', async ({ page }) => {
-  page.setViewportSize({width: 480, height: 480})
+  page.setViewportSize({width: 1280, height: 720})
   await page.goto('http://localhost:3000/3/');
   
   const rect = page.getByTestId('Box-1');

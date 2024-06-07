@@ -9,13 +9,14 @@ import { PairSet } from '../../src/PairSet';
 
 function Test2() 
 {
+  const barrierWidthHeight = 400;
   const rect1 = useRef<SVGSVGElement>(null);
   const [initialBox1X, setInitialBox1X] = useState<number>(0);
   const [terminalBox1X, setTerminalBox1X] = useState<number>(0);
   const [collisionCount, setCollisionCount] = useState<number>(0);
   const [collidedElements, setCollidedElements] = useState<PairSet>();
   const [vectorState, setVectorState] = useState<Vector>(new Vector(0,0));
-  const [barriers, setBarriers] = useState<ViewportBarriers>(generateViewport(window.innerWidth, window.innerHeight));
+  const [barriers, setBarriers] = useState<ViewportBarriers>(generateViewport(window.innerWidth, window.innerHeight, window.innerWidth/4, window.innerHeight/4));
   const [barrierX, setBarrierX] = useState<number>(0);
   const [stopMeasuring, setStop] = useState<boolean>(false);
   
@@ -79,7 +80,7 @@ function Test2()
 
     function handleResize()
     {
-      setBarriers(generateViewport(window.innerWidth, window.innerHeight));
+      setBarriers(generateViewport(window.innerWidth, window.innerHeight, barrierWidthHeight, barrierWidthHeight));
     }
     
     handleResize();
