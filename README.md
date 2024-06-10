@@ -18,6 +18,23 @@ My playwright tests depend on the `serve` library, so install `serve` (I did it 
 For reference, you can view my publically available GitLab CI / CD pipeline to learn how to run unit tests and playwright tests on a node 18 docker image (runs on Linux, but with some minor tweaks I've tested it on Windows, too).
 https://gitlab.com/learningtcr/react-physics/-/blob/main/.gitlab-ci.yml?ref_type=heads
 
+### Testing Structure
+Admittedly, the structure of files/directories in the project is somewhat disorganized. However, most source files are in ./src and test files are organized by their granularity in ./test/unit as the lowest to ./test/e2e as the highest integration level test. To get an idea for the basic functionality, the e2e playwright tests describe the implemented functionality and expectation of the test.
+
+### (Windows) How to run tests, which involves typical usage of a basic code example.
+> For Linux, you will need to download the Linux rollup to execute the tests. An example of this is located in the Dockerfile. It will be suggested upon failure of text execution.
+0) Install dependencies (as seen in the Dockerfile):
+> RUN npm ci
+
+> RUN npx playwright install
+
+> RUN npm install -g serve
+
+> RUN npx playwright install-deps
+
+1) npx playwright test (this runs the build script and compiles the typescript and then serves the webpage for test execution)
+### How to build
+
 ### Code Example
 ```
 <AnimatedRect 
