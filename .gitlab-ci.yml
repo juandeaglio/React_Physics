@@ -44,8 +44,6 @@ playwright tests:
     - npm install
     - npm i @rollup/rollup-linux-x64-gnu # only needed on linux environments, not windows
     - npm install -g serve  # Install 'serve' package globally
-    - npm install -g @playwright/test@latest
     - npx playwright install
     - npx playwright install-deps
-    - npm dedupe
     - npx playwright test
