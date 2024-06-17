@@ -57,3 +57,15 @@ test('Perpetual motion of a box after giving initial vector', async ({ page }) =
   }).toPass({ timeout: 6000 });
   
 });
+
+test('Box-Box collision', async ({ page }) => {
+  page.setViewportSize({width: 1280, height: 720})
+  await page.goto('http://localhost:3000/4/');
+  
+  const rect = page.getByTestId('Box-1');
+  await expect(rect).toBeVisible();
+
+  const rect2 = page.getByTestId('Box-2');
+  await expect(rect2).toBeVisible();
+  
+});

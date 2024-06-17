@@ -17,7 +17,8 @@ function App({children}: AppProps)
     return(
         <div>
             <AnimatedRect ref={rect1} 
-                velocityVector={new Vector(Math.sqrt(100/2), Math.sqrt(100/2))} 
+                velocityVector={new Vector(Math.sqrt(100/2), Math.sqrt(100/2))}
+                startingPos={new Vector(0,0)}
                 moreProps={{
                     "data-testid": "Box-1", 
                     transition: "transform 1s linear 0s"

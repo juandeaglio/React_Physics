@@ -16,6 +16,7 @@ export interface GenericProps
 export interface AnimatedRectProps {
   ref?: RefObject<SVGSVGElement>;
   velocityVector?: Vector;
+  startingPos?: Vector;
   left?: string;
   moreProps?: GenericProps;
 }
@@ -29,8 +30,6 @@ interface UpdateVectorAction {
 
 }
 type VectorAction = UpdateVectorAction;
-
-const initialVector = new Vector(0, 0);
 
 const vectorReducer = (state: Vector, action: VectorAction) => {
   if (action.type === 'UPDATE_VECTOR') {
@@ -48,10 +47,17 @@ const vectorReducer = (state: Vector, action: VectorAction) => {
 
 export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props, ref) => {
   const [style, setStyle] = useState<CSSProperties>({position: "absolute", left:"0px", bottom:"0px"});
-  const start = useRef<number>(Date.now());
   const renderedVector = useRef<Vector>();
+  const [startingPos, setStartingPos] = useState<Vector>(new Vector(0,0));
 
-  const [vector, dispatch] = useReducer(vectorReducer, initialVector);
+  const [vector, dispatch] = useReducer(vectorReducer, startingPos);
+
+  useEffect(() => {
+    if(props.startingPos)
+    {
+      setStartingPos(props.startingPos);
+    }
+  }, [props.startingPos])
 
   useEffect(() => {
     // process every frame 60 frames per second
@@ -81,21 +87,13 @@ export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props,
 
   useEffect(() => {
     renderedVector.current = vector;
-
-    //const targetFrameRate = 60;
-    const delta = Date.now() - start.current;
-    if(props.velocityVector !== undefined && delta < 1000)
-    {
-      //console.log("Elapsed Time: ", delta)
-      //console.log("Current: ", renderedVector.current?.x, ", ", renderedVector.current?.y)
-      //console.log("Adding ", props.velocityVector?.x / targetFrameRate, " and ", props.velocityVector?.y / targetFrameRate)
-    }
-  }, [vector.x, vector, props.velocityVector])
+  }, [vector])
+  
   
   return (
     <svg 
       data-velocityvector={`${props.velocityVector?.x}, ${props.velocityVector?.y}`}
-      data-testid={props.moreProps?.['data-testid']} 
+      data-testid={props.moreProps?.['data-testid']}
       width="100px"
       height="100px"
       role="animatable"
