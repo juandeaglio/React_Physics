@@ -116,10 +116,14 @@ export class Collisions{
     {
         if (this.isRectangleDefined(rect1) && this.isRectangleDefined(rect2))
         {
-            const center1 = new Vector(rect1.left! + (rect1.right! - rect1.left!), rect1.top! + (rect1.bottom! - rect1.top!));
-            const center2  = new Vector(rect2.left! + (rect2.right! - rect2.left!), rect2.top! + (rect2.bottom! - rect2.top!));
+            const center1 = new Vector(rect1.left! + rect1.width!/2, rect1.top! + (rect1.height!/2));
+            const center2  = new Vector(rect2.left! + rect2.width!/2, rect2.top! + (rect2.height!/2));
             let overlapX = Math.abs(Math.abs(center1.x - center2.x) - (rect1.width! + rect2.width!) / 2);
+            console.log("Overlap X calculation: |", "|", center1.x, "-", center2.x, "| - (", rect1.width, "+", rect2.width, ") / ", 2 );
             let overlapY = Math.abs(Math.abs(center1.y - center2.y) - (rect1.height! + rect2.height!) / 2);
+            console.log("Overlap Y calculation: |", "|", center1.y, "-", center2.y, "| - (", rect1.height, "+", rect2.height, ") / ", 2 );
+
+        
             if(center1.x < center2.x)
             {
                 overlapX = -overlapX
@@ -148,11 +152,28 @@ export class Collisions{
                 const secondVector = parseVelocityVectorAttribute(secondTransform);
 
                 const overlaps = this.calculateOverlap(pair.first.current?.getBoundingClientRect(), pair.second.current?.getBoundingClientRect());
-                const boundingBoxOverlapX = overlaps[0];
-                const boundingBoxOverlapY = overlaps[1];
+                let boundingBoxOverlapX = overlaps[0];
+                let boundingBoxOverlapY = overlaps[1];
+                if (Object.is(boundingBoxOverlapX, 0))
+                {
+                    boundingBoxOverlapX = 1
+                }
+                else
+                {
+                    boundingBoxOverlapX = -1
+                }
+                if (Object.is(boundingBoxOverlapX, -0))
+                {
+                    boundingBoxOverlapY = 1
+                }
+                else
+                {
+                    boundingBoxOverlapY = -1
+                }
                 const normalizedX = +((boundingBoxOverlapX || 0) > 0) - +((boundingBoxOverlapX || 0) < 0);
                 const normalizedY = +((boundingBoxOverlapY || 0) > 0) - +((boundingBoxOverlapY || 0) < 0);
                 
+
                 const newVector = [];
                 newVector.push(new Vector(Math.abs(firstVector[0]) * normalizedX , Math.abs(firstVector[1])* normalizedY));
                 newVector.push(new Vector(-Math.abs(secondVector[0]) * normalizedX, -Math.abs(secondVector[1]) * normalizedY));

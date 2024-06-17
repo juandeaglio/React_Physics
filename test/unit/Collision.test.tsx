@@ -144,4 +144,28 @@ describe('collisions class', () => {
                 expect(newVectors[0][0]).toEqual(new Vector(-1280, 0));
                 expect(newVectors[0][1]).toEqual(new Vector(0, 0));
         })
+
+        
+        test('A force against rect already stuck in barrier', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(101,101,100,100), "1280, 0");
+                const barrier = generateViewport(200,200, barrierWidth, barrierHeight).right;
+                const pair = new PairSet();
+                pair.add(elem, barrier);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
+                expect(newVectors[0][0]).toEqual(new Vector(-1280, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(0, 0));
+        })
+
+                
+        test('Two barely not-colliding boxes continue on their trajectories', () => {
+                const collisions = new Collisions();
+                const elem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(100,0,100,100), "-100, 0");
+                const secondElem: RenderableElement = new RenderableElement(createdMockedGetBoundingClientRect(200,0,100,100), "100, 0");
+                const pair = new PairSet();
+                pair.add(elem, secondElem);
+                const newVectors = collisions.calculateVectorsWithCollisions(pair);
+                expect(newVectors[0][0]).toEqual(new Vector(-100, 0));
+                expect(newVectors[0][1]).toEqual(new Vector(100, 0));
+        })
 });
