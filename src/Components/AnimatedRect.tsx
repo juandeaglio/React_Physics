@@ -1,4 +1,4 @@
-import { useState, useEffect, RefObject, forwardRef, CSSProperties, useRef, useReducer } from 'react';
+import { useState, useEffect, RefObject, forwardRef, CSSProperties, useReducer } from 'react';
 import styled from 'styled-components';
 import { Vector } from './Vector';
 
@@ -47,17 +47,7 @@ const vectorReducer = (state: Vector, action: VectorAction) => {
 
 export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props, ref) => {
   const [style, setStyle] = useState<CSSProperties>({position: "absolute", left:"0px", bottom:"0px"});
-  const renderedVector = useRef<Vector>();
-  const [startingPos, setStartingPos] = useState<Vector>(new Vector(0,0));
-
-  const [vector, dispatch] = useReducer(vectorReducer, startingPos);
-
-  useEffect(() => {
-    if(props.startingPos)
-    {
-      setStartingPos(props.startingPos);
-    }
-  }, [props.startingPos])
+  const [vector, dispatch] = useReducer(vectorReducer, props.startingPos || new Vector(0,0));
 
   useEffect(() => {
     // process every frame 60 frames per second
@@ -66,7 +56,7 @@ export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props,
 
     function updateValues()
     {
-      if(props.velocityVector !== undefined && renderedVector.current !== undefined  && props.velocityVector.x !== undefined && props.velocityVector.y !== undefined)
+      if(props.velocityVector !== undefined && props.velocityVector.x !== undefined && props.velocityVector.y !== undefined)
       {
         dispatch({
           type: 'UPDATE_VECTOR',
@@ -84,11 +74,6 @@ export const AnimatedRect = forwardRef<SVGSVGElement, AnimatedRectProps>((props,
       cancelAnimationFrame(frameId);
     };
   }, [props.velocityVector, vector.x, vector.y]);
-
-  useEffect(() => {
-    renderedVector.current = vector;
-  }, [vector])
-  
   
   return (
     <svg 
