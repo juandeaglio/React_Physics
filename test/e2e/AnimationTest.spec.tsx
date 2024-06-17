@@ -68,4 +68,10 @@ test('Box-Box collision', async ({ page }) => {
   const rect2 = page.getByTestId('Box-2');
   await expect(rect2).toBeVisible();
   
+  await expect(async () => {
+    let count = await page.getByTestId('collision-counter').first().textContent() ?? 'NaN';
+    count = await page.getByTestId('collision-counter').first().textContent() ?? '0';
+    expect(parseInt(count)).toBeGreaterThan(0);
+  }).toPass({ timeout: 6000 });
+  
 });
