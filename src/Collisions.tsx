@@ -152,8 +152,11 @@ export class Collisions{
                 const boundingBoxOverlapY = overlaps[1];
                 const normalizedX = +((boundingBoxOverlapX || 0) > 0) - +((boundingBoxOverlapX || 0) < 0);
                 const normalizedY = +((boundingBoxOverlapY || 0) > 0) - +((boundingBoxOverlapY || 0) < 0);
-
-                vectors.push([new Vector(Math.abs(firstVector[0]) * normalizedX , Math.abs(firstVector[1])* normalizedY), new Vector(-Math.abs(secondVector[0]) * normalizedX, -Math.abs(secondVector[1]) * normalizedY)]);
+                
+                const newVector = [];
+                newVector.push(new Vector(Math.abs(firstVector[0]) * normalizedX , Math.abs(firstVector[1])* normalizedY));
+                newVector.push(new Vector(-Math.abs(secondVector[0]) * normalizedX, -Math.abs(secondVector[1]) * normalizedY));
+                vectors.push(newVector);
             }
         }
         

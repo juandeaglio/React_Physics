@@ -80,9 +80,11 @@ function Test4()
     if(collidedElements !== undefined && collidedElements.size > 0)
     {
       const newVectors: Array<Array<Vector>> | undefined = collisionDetector.current?.calculateVectorsWithCollisions(collidedElements);
-      if (newVectors !== undefined)
+      if (newVectors)
       {
         console.log("Collision detected: ", newVectors);
+        console.log("Direction #1 detected: ", newVectors[0][0]);
+        console.log("Direction #2 detected: ", newVectors[0][1]);
         setVectorState(newVectors[0][0]);
         setSecondVectorState(newVectors[0][1]);
       }
