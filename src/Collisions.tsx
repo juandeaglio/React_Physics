@@ -119,9 +119,7 @@ export class Collisions{
             const center1 = new Vector(rect1.left! + rect1.width!/2, rect1.top! + (rect1.height!/2));
             const center2  = new Vector(rect2.left! + rect2.width!/2, rect2.top! + (rect2.height!/2));
             let overlapX = Math.abs(Math.abs(center1.x - center2.x) - (rect1.width! + rect2.width!) / 2);
-            console.log("Overlap X calculation: |", "|", center1.x, "-", center2.x, "| - (", rect1.width, "+", rect2.width, ") / ", 2 );
             let overlapY = Math.abs(Math.abs(center1.y - center2.y) - (rect1.height! + rect2.height!) / 2);
-            console.log("Overlap Y calculation: |", "|", center1.y, "-", center2.y, "| - (", rect1.height, "+", rect2.height, ") / ", 2 );
 
         
             if(center1.x < center2.x)

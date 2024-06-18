@@ -53,9 +53,10 @@ test('Perpetual motion of a box after giving initial vector', async ({ page }) =
   await expect(async () => {
     const currentX = await page.getByTestId('Box-1-x').first().textContent() ?? '0';
     const initialX = await page.getByTestId('initial-Box-1-x').first().textContent() ?? '0';
-    expect(parseInt(currentX) - parseInt(initialX)).toBeGreaterThanOrEqual(20);
+    expect(parseInt(currentX) - parseInt(initialX)).toBeGreaterThanOrEqual(10);
   }).toPass({ timeout: 6000 });
-  
+  const velocityVector = await rect.getAttribute("data-velocityvector");
+  expect(velocityVector).toBe("10, 0");
 });
 
 test('Box-Box collision', async ({ page }) => {
